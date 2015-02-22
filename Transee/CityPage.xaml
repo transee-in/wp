@@ -13,9 +13,9 @@
         <ImageBrush Stretch="UniformToFill" ImageSource="Assets/page-bg1152.jpg"/>
     </Page.Background>
     <Page.BottomAppBar>
-        <CommandBar Background="#7F1F1F1F">
-            <AppBarButton Icon="Back" Label="Cities" Click="AppBarButton_ClickCities" />
-            <AppBarButton Icon="Accept" Label="Next" Click="AppBarButton_ClickNext" />
+        <CommandBar Background="#4C1F1F1F">
+            <AppBarButton x:Uid="CitiesButton" Icon="Back" Label="Cities" Click="AppBarButton_ClickCities" />
+            <AppBarButton x:Uid="ShowButton" Icon="Accept" Label="Next" Click="AppBarButton_ClickNext" />
         </CommandBar>
     </Page.BottomAppBar>
 
@@ -42,22 +42,20 @@
             </Pivot.HeaderTemplate>
             <Pivot.ItemTemplate>
                 <DataTemplate>
-                    <ListBox
-                        SelectionMode="Multiple"
-                        ItemsSource="{Binding Elements}"
-                        Background="Transparent"
-                        SelectionChanged="ListBox_SelectionChanged"
-                        Margin="0,0,0,60">
-                        <ListBox.ItemTemplate>
-                            <DataTemplate>
-                                <ScrollViewer Height="40" ManipulationMode="None" IsTapEnabled="False" IsRightTapEnabled="False" IsHoldingEnabled="False" IsDoubleTapEnabled="False">
-                                    <StackPanel Height="40" ManipulationMode="None" IsTapEnabled="False" IsRightTapEnabled="False" IsHoldingEnabled="False" IsDoubleTapEnabled="False">
-                                        <TextBlock Text="{Binding Name}" Style="{ThemeResource ListViewItemTextBlockStyle}" Width="150" Height="40" IsTapEnabled="False" ManipulationMode="None" IsHoldingEnabled="False"/>
-                                    </StackPanel>
-                                </ScrollViewer>
-                            </DataTemplate>
-                        </ListBox.ItemTemplate>
-                    </ListBox>
+                    <ScrollViewer>
+                        <ListBox
+                            SelectionMode="Multiple"
+                            ItemsSource="{Binding Elements}"
+                            Background="Transparent"
+                            SelectionChanged="ListBox_SelectionChanged"
+                            Margin="0,0,0,120">
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Name}" Style="{ThemeResource ListViewItemTextBlockStyle}" Width="150" Height="40"/>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                        </ListBox>
+                    </ScrollViewer>
                 </DataTemplate>
             </Pivot.ItemTemplate>
         </Pivot>

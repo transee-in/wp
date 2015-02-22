@@ -8,6 +8,7 @@ using Transee.DataModel;
 using System;
 using Transee.API;
 using Windows.Storage;
+using System.Diagnostics;
 
 namespace Transee {
     public sealed partial class CityPage : Page {

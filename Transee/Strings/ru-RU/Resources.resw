@@ -159,4 +159,10 @@
   <data name="try_harder" xml:space="preserve">
     <value>Попробуйте снова</value>
   </data>
+  <data name="CitiesButton.Label" xml:space="preserve">
+    <value>Города</value>
+  </data>
+  <data name="ShowButton.Label" xml:space="preserve">
+    <value>Показать</value>
+  </data>
 </root>
