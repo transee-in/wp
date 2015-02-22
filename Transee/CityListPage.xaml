@@ -8,9 +8,11 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
-    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
     DataContext="{Binding DefaultViewModel, RelativeSource={RelativeSource Self}}"
     d:DataContext="{Binding Source={d:DesignInstance Type=data:CityListSample, IsDesignTimeCreatable=True}}">
+    <Page.Background>
+        <ImageBrush Stretch="UniformToFill" ImageSource="Assets/page-bg1152.jpg"/>
+    </Page.Background>
 
     <Page.Transitions>
         <TransitionCollection>
@@ -32,12 +34,12 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        
+
         <ProgressBar x:Name="progressBar"/>
 
         <StackPanel Grid.Row="0" Margin="19,0,0,0">
             <TextBlock x:Uid="Application" Text="TRANSEE" Style="{ThemeResource TitleTextBlockStyle}" Margin="0,12,0,0"/>
-            <TextBlock x:Uid="CityListHeader" Text="выборите город" Margin="0,-6.5,0,26.5" Style="{ThemeResource HeaderTextBlockStyle}" TextWrapping="NoWrap" CharacterSpacing="{ThemeResource PivotHeaderItemCharacterSpacing}" />
+            <TextBlock x:Uid="CityListHeader" Text="выберите город" Margin="0,-6.5,0,26.5" Style="{ThemeResource HeaderTextBlockStyle}" TextWrapping="NoWrap" CharacterSpacing="{ThemeResource PivotHeaderItemCharacterSpacing}" />
         </StackPanel>
 
         <ListView
@@ -50,8 +52,7 @@
             IsItemClickEnabled="True"
             ItemClick="ItemView_ItemClick"
             SelectionMode="None"
-            IsSwipeEnabled="false"
-            Margin="19,0,0,0">
+            IsSwipeEnabled="false" Margin="19,0">
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <Grid>
@@ -60,7 +61,7 @@
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
 
-                        <StackPanel Grid.Column="1" VerticalAlignment="Top" Margin="0,7,0,7">
+                        <StackPanel Margin="0,7,0,7">
                             <TextBlock Text="{Binding Name}" Style="{ThemeResource ListViewItemTextBlockStyle}"/>
                         </StackPanel>
                     </Grid>

@@ -9,6 +9,9 @@
     xmlns:data="using:Transee.DataModel"
     DataContext="{Binding DefaultViewModel, RelativeSource={RelativeSource Self}}"
     d:DataContext="{Binding Source={d:DesignInstance Type=data:TransportListSample, IsDesignTimeCreatable=True}}">
+    <Page.Background>
+        <ImageBrush Stretch="UniformToFill" ImageSource="Assets/page-bg1152.jpg"/>
+    </Page.Background>
     <Page.BottomAppBar>
         <CommandBar Background="#7F1F1F1F">
             <AppBarButton Icon="Back" Label="Cities" Click="AppBarButton_ClickCities" />
