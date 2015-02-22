@@ -97,7 +97,10 @@ namespace Transee {
                     }
                 }
             } else {
-                var args = new ErrorPageArgs("Turn on your internet connection");
+                var args = new ErrorPageArgs("internet_connection_error") {
+                    CheckingFunction = () => IsInternetAvailable,
+                    SuccessFunction = ShowCityListOrCityPage
+                };
 
                 if (!rootFrame.Navigate(typeof(ErrorPage), args)) {
                     throw new Exception("Failed to create initial page");

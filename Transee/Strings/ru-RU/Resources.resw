@@ -150,4 +150,13 @@
   <data name="load_positions" xml:space="preserve">
     <value>Загрузка данных о транспорте...</value>
   </data>
+  <data name="ErrorButton.Content" xml:space="preserve">
+    <value>Попробовать снова</value>
+  </data>
+  <data name="internet_connection_error" xml:space="preserve">
+    <value>Проблемы с интернетом</value>
+  </data>
+  <data name="try_harder" xml:space="preserve">
+    <value>Попробуйте снова</value>
+  </data>
 </root>

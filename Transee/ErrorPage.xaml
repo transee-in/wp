@@ -12,10 +12,8 @@
 
     <Grid>
         <StackPanel Width="200" Height="120" Margin="0">
-            <TextBlock x:Name="errorTextBlock" TextWrapping="Wrap" Width="200" Height="60" FontSize="18.667" TextAlignment="Center">
-                Turn on your internet connection
-            </TextBlock>
-            <Button Content="Relaunch Transee" HorizontalAlignment="Center" VerticalAlignment="Center" Click="Button_Click" />
+            <TextBlock x:Name="errorTextBlock" Text="Error" TextWrapping="Wrap" Width="200" Height="60" FontSize="18.667" TextAlignment="Center" />
+            <Button x:Uid="ErrorButton" Content="Relaunch" HorizontalAlignment="Center" VerticalAlignment="Center" Click="Button_Click" />
         </StackPanel>
     </Grid>
 </Page>
