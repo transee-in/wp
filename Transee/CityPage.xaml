@@ -45,7 +45,9 @@
                     <ListBox
                         SelectionMode="Multiple"
                         ItemsSource="{Binding Elements}"
-                        Background="Transparent" SelectionChanged="ListBox_SelectionChanged">
+                        Background="Transparent"
+                        SelectionChanged="ListBox_SelectionChanged"
+                        Margin="0,0,0,60">
                         <ListBox.ItemTemplate>
                             <DataTemplate>
                                 <ScrollViewer Height="40" ManipulationMode="None" IsTapEnabled="False" IsRightTapEnabled="False" IsHoldingEnabled="False" IsDoubleTapEnabled="False">
