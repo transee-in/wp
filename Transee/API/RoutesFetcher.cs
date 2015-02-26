@@ -1,39 +1,16 @@
 ﻿using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Transee.DataModel;
+using Transee.DataModel.Routes;
 
 namespace Transee.API {
-    using RouteListSchema = Dictionary<string, Dictionary<string, List<List<double>>>>;
-
     class RoutesFetcher {
-        public static async Task<List<RouteType>> GetAsync(string city) {
+        public static async Task<Types> GetAsync(string city) {
             var request = new Request();
-            var jsonData = await request.Get(city, "routes");
-            var routes = new List<RouteType>();
-            
-            RouteListSchema data = JsonConvert.DeserializeObject<RouteListSchema>(jsonData);
+            var jsonData = await request.GetCity(city, "routes");
+            var listRoutes = JsonConvert.DeserializeObject<List<DataModel.Routes.Type>>(jsonData);
 
-            foreach (var route in data) {
-                RouteType routeType = new RouteType(route.Key);
-
-                foreach (var number in route.Value) {
-                    var latLons = new List<LatLon>();
-                    var routeItem = new RouteItem();
-
-                    foreach (var rawLatLons in number.Value) {
-                        var latLon = new LatLon(rawLatLons);
-
-                        routeItem.Route.Add(latLon);
-                    }
-
-                    routeType.Items.Add(number.Key, routeItem);
-                }
-
-                routes.Add(routeType);
-            }
-
-            return routes;
+            return new Types(listRoutes);
         }
     }
 }

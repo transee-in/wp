@@ -84,7 +84,7 @@
     <Compile Include="API\Request.cs" />
     <Compile Include="API\RoutesFetcher.cs" />
     <Compile Include="API\StationsFetcher.cs" />
-    <Compile Include="API\TransportsFetcher.cs" />
+    <Compile Include="API\CityInfoFetcher.cs" />
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
@@ -97,21 +97,29 @@
     <Compile Include="Common\RelayCommand.cs" />
     <Compile Include="Common\Status.cs" />
     <Compile Include="Common\SuspensionManager.cs" />
-    <Compile Include="DataModel\CityItem.cs" />
-    <Compile Include="DataModel\CityListSample.cs" />
+    <Compile Include="DataModel\Cities\Cities.cs" />
+    <Compile Include="DataModel\Cities\City.cs" />
+    <Compile Include="DataModel\CityInfo\TypeItem.cs" />
+    <Compile Include="DataModel\CityInfo\Type.cs" />
+    <Compile Include="DataModel\CityInfo\Types.cs" />
     <Compile Include="DataModel\LatLon.cs" />
-    <Compile Include="DataModel\LatLonAz.cs" />
-    <Compile Include="DataModel\PositionItem.cs" />
-    <Compile Include="DataModel\PositionType.cs" />
-    <Compile Include="DataModel\RouteType.cs" />
-    <Compile Include="DataModel\RouteItem.cs" />
-    <Compile Include="DataModel\StationType.cs" />
-    <Compile Include="DataModel\TransportItem.cs" />
-    <Compile Include="DataModel\TransportListSample.cs" />
-    <Compile Include="DataModel\TransportType.cs" />
+    <Compile Include="DataModel\Positions\Item.cs" />
+    <Compile Include="DataModel\Positions\Type.cs" />
+    <Compile Include="DataModel\Positions\TypeItem.cs" />
+    <Compile Include="DataModel\Positions\Types.cs" />
+    <Compile Include="DataModel\Routes\Type.cs" />
+    <Compile Include="DataModel\Routes\Route.cs" />
+    <Compile Include="DataModel\Routes\Types.cs" />
+    <Compile Include="DataModel\Stations\Item.cs" />
+    <Compile Include="DataModel\Stations\Type.cs" />
+    <Compile Include="DataModel\Stations\Types.cs" />
+    <Compile Include="DataSamples\CityListPage.cs" />
+    <Compile Include="DataSamples\CityPage.cs" />
+    <Compile Include="DataSamples\MapPage.cs" />
     <Compile Include="ErrorPage.xaml.cs">
       <DependentUpon>ErrorPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="DataModel\MarkerColors.cs" />
     <Compile Include="MapPage.xaml.cs">
       <DependentUpon>MapPage.xaml</DependentUpon>
     </Compile>
@@ -170,6 +178,7 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '12.0' ">
     <VisualStudioVersion>12.0</VisualStudioVersion>
   </PropertyGroup>

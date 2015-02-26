@@ -3,10 +3,13 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:Transee"
+    xmlns:dataSamples="using:Transee.DataSamples"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:Maps="using:Windows.UI.Xaml.Controls.Maps"
     mc:Ignorable="d"
+    DataContext="{Binding DefaultViewModel, RelativeSource={RelativeSource Self}}"
+    d:DataContext="{Binding Source={d:DesignInstance Type=dataSamples:MapPage, IsDesignTimeCreatable=True}}"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <Page.Resources>
@@ -22,7 +25,22 @@
     <Grid>
         <Maps:MapControl x:Name="map" MapServiceToken="Sb94wT7LX1zbYUvWSKfE6w" />
         <StackPanel VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="20,0,0,20">
-            <TextBlock Text="Legend" Foreground="#FF360707" />
+            <StackPanel x:Name="legendBlock" Width="200" >
+                <ListView ItemsSource="{Binding MarkerColors.Colors}" Background="#4C000000">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock
+                                Text="{Binding Name}"
+                                HorizontalAlignment="Stretch"
+                                VerticalAlignment="Stretch"
+                                Foreground="{Binding Brush}" />
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </StackPanel>
+            <StackPanel x:Name="legendButton" Background="#4C000000" Tapped="legendButton_Tapped">
+                <TextBlock x:Uid="LegendButton" Text="Legend" Foreground="#FFFFFF" Margin="10,7" />
+            </StackPanel>
         </StackPanel>
     </Grid>
 </Page>

@@ -6,9 +6,9 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
-    xmlns:data="using:Transee.DataModel"
+    xmlns:dataSamples="using:Transee.DataSamples"
     DataContext="{Binding DefaultViewModel, RelativeSource={RelativeSource Self}}"
-    d:DataContext="{Binding Source={d:DesignInstance Type=data:TransportListSample, IsDesignTimeCreatable=True}}">
+    d:DataContext="{Binding Source={d:DesignInstance Type=dataSamples:CityPage, IsDesignTimeCreatable=True}}">
     <Page.Background>
         <ImageBrush Stretch="UniformToFill" ImageSource="Assets/page-bg1152.jpg"/>
     </Page.Background>
@@ -45,7 +45,7 @@
                     <ScrollViewer>
                         <ListBox
                             SelectionMode="Multiple"
-                            ItemsSource="{Binding Elements}"
+                            ItemsSource="{Binding Items}"
                             Background="Transparent"
                             SelectionChanged="ListBox_SelectionChanged"
                             Margin="0,0,0,120">

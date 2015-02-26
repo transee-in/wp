@@ -1,31 +1,16 @@
 ﻿using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Transee.DataModel;
+using Transee.DataModel.Stations;
 
 namespace Transee.API {
-    using StationListSchema = Dictionary<string, List<List<double>>>;
-
     class StationsFetcher {
-        public static async Task<List<StationType>> GetAsync(string city) {
+        public static async Task<Types> GetAsync(string city) {
             var request = new Request();
-            var jsonData = await request.Get(city, "stations");
-            var stations = new List<StationType>();
+            var jsonData = await request.GetCity(city, "stations");
+            var listStations = JsonConvert.DeserializeObject<List<DataModel.Stations.Type>>(jsonData);
 
-            StationListSchema data = JsonConvert.DeserializeObject<StationListSchema>(jsonData);
-
-            foreach (var station in data) {
-                StationType stationType = new StationType(station.Key);
-
-                foreach (var rawLatLons in station.Value) {
-                    var latLon = new LatLon(rawLatLons);
-                    stationType.Items.Add(latLon);
-                }
-
-                stations.Add(stationType);
-            }
-
-            return stations;
+            return new Types(listStations);
         }
     }
 }

@@ -1,20 +1,19 @@
 ﻿using Transee.Common;
-using Transee.DataModel;
+using Transee.DataModel.Cities;
 using System;
 using Windows.ApplicationModel.Resources;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
 using Windows.Storage;
 using Transee.API;
-using System.Collections.Generic;
 
 namespace Transee {
     class CityListPageArgs {
-        public CityListPageArgs(List<CityItem> cities) {
+        public CityListPageArgs(Cities cities) {
             this.Cities = cities;
         }
 
-        public List<CityItem> Cities { get; set; }
+        public Cities Cities { get; set; }
     }
 
     public sealed partial class CityListPage : Page {
@@ -41,7 +40,7 @@ namespace Transee {
 
         private async void NavigationHelper_LoadState(object sender, LoadStateEventArgs e) {
             var args = e.NavigationParameter as CityListPageArgs;
-            List<CityItem> cities;
+            Cities cities;
 
             if (args != null) {
                 cities = args.Cities;
@@ -51,7 +50,7 @@ namespace Transee {
                 status.HideStatusBar();
             }
 
-            this.DefaultViewModel["Cities"] = cities;
+            this.DefaultViewModel["Cities"] = cities.Items;
         }
 
         private void NavigationHelper_SaveState(object sender, SaveStateEventArgs e) {
@@ -61,11 +60,11 @@ namespace Transee {
         private async void ItemView_ItemClick(object sender, ItemClickEventArgs e) {
             status.ShowStatusBar("load_city_data");
 
-            var cityId = ((CityItem) e.ClickedItem).Id;
-            // load data, request should cache it
+            var cityId = ((City) e.ClickedItem).Id;
+            // load data, Request class should cache it
             var stations = await StationsFetcher.GetAsync(cityId);
             var routes = await RoutesFetcher.GetAsync(cityId);
-            var transports = await TransportsFetcher.GetAsync(cityId);
+            var transports = await CityInfoFetcher.GetAsync(cityId);
 
             settings.Values["CityID"] = cityId;
 

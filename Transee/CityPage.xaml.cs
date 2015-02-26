@@ -4,11 +4,10 @@ using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
 using Windows.ApplicationModel.Resources;
-using Transee.DataModel;
+using Transee.DataModel.CityInfo;
 using System;
 using Transee.API;
 using Windows.Storage;
-using System.Diagnostics;
 
 namespace Transee {
     public sealed partial class CityPage : Page {
@@ -17,7 +16,7 @@ namespace Transee {
         private ApplicationDataContainer settings = ApplicationData.Current.LocalSettings;
         private ResourceLoader resourceLoader = new ResourceLoader();
         private Status status = new Status();
-        private Dictionary<string, TransportType> selectedTransports = new Dictionary<string, TransportType>();
+        private Dictionary<string, DataModel.CityInfo.Type> selectedTransports = new Dictionary<string, DataModel.CityInfo.Type>();
         private string CityId;
 
         public CityPage() {
@@ -39,10 +38,11 @@ namespace Transee {
         private async void NavigationHelper_LoadState(object sender, LoadStateEventArgs e) {
             this.CityId = e.NavigationParameter.ToString();
             var cityName = resourceLoader.GetString(this.CityId);
-            var transports = await TransportsFetcher.GetAsync(this.CityId);
+            var transports = await CityInfoFetcher.GetAsync(this.CityId);
 
+            // TODO: add page with favorite transports
             this.DefaultViewModel["CityName"] = cityName;
-            this.DefaultViewModel["Transports"] = transports;
+            this.DefaultViewModel["Transports"] = transports.Items;
         }
 
         private void NavigationHelper_SaveState(object sender, SaveStateEventArgs e) {
@@ -62,7 +62,7 @@ namespace Transee {
 
             foreach (var type in selectedTransports) {
                 var transportIds = new List<string>();
-                foreach (var element in type.Value.Elements) {
+                foreach (var element in type.Value.Items) {
                     transportIds.Add(element.Id);
                 }
                 types.Add(type.Key, transportIds);
@@ -81,18 +81,23 @@ namespace Transee {
 
         private void ListBox_SelectionChanged(object sender, SelectionChangedEventArgs e) {
             var listBox = sender as ListBox;
-            var transportTypeID = listBox.DataContext.ToString();
-            var transportType = new TransportType(transportTypeID);
+            var cityInfoType = listBox.DataContext as DataModel.CityInfo.Type;
+            var transportTypeId = cityInfoType.Id;
+            //var transportType = new DataModel.CityInfo.Type(transportTypeId);
 
-            foreach (TransportItem item in listBox.SelectedItems) {
-                transportType.Elements.Add(item);
+            var transportType = new DataModel.CityInfo.Type() {
+                Id = transportTypeId, Items = new List<TypeItem>()
+            };
+
+            foreach (TypeItem item in listBox.SelectedItems) {
+                transportType.Items.Add(item);
             }
 
-            if (selectedTransports.ContainsKey(transportTypeID)) {
-                selectedTransports.Remove(transportTypeID);
+            if (selectedTransports.ContainsKey(transportTypeId)) {
+                selectedTransports.Remove(transportTypeId);
             }
 
-            selectedTransports.Add(transportTypeID, transportType);
+            selectedTransports.Add(transportTypeId, transportType);
         }
 
         #region Регистрация NavigationHelper

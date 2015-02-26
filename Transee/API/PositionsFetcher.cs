@@ -2,40 +2,18 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Net.Http;
-using Transee.DataModel;
+using Transee.DataModel.Positions;
 
 namespace Transee.API {
-    using PositionListSchema = Dictionary<string, Dictionary<string, List<List<double>>>>;
     using Filter = Dictionary<string, List<string>>;
 
     class PositionsFetcher {
-        public static async Task<List<PositionType>> GetAsync(string city, Filter filter) {
+        public static async Task<Types> GetAsync(string city, Filter filter) {
             var request = new Request();
             var jsonData = await request.Post(city, "positions", PrepareFilter(filter));
-            var routes = new List<PositionType>();
+            var listPositions = JsonConvert.DeserializeObject<List<DataModel.Positions.Type>>(jsonData);
 
-            PositionListSchema data = JsonConvert.DeserializeObject<PositionListSchema>(jsonData);
-
-            foreach (var position in data) {
-                PositionType routeType = new PositionType(position.Key);
-
-                foreach (var number in position.Value) {
-                    var latLonsAz = new List<LatLonAz>();
-                    var positionItem = new PositionItem();
-
-                    foreach (var rawLatLonAzs in number.Value) {
-                        var latLonAz = new LatLonAz(rawLatLonAzs);
-
-                        positionItem.Route.Add(latLonAz);
-                    }
-
-                    routeType.Items.Add(number.Key, positionItem);
-                }
-
-                routes.Add(routeType);
-            }
-
-            return routes;
+            return new Types(listPositions);
         }
 
         private static FormUrlEncodedContent PrepareFilter(Filter filter) {
