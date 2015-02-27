@@ -25,7 +25,7 @@
 
     <Grid>
         <Maps:MapControl x:Name="map" MapServiceToken="Sb94wT7LX1zbYUvWSKfE6w" />
-        <StackPanel VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="20,0,0,20">
+        <StackPanel VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="20,0,0,20" Visibility="Collapsed">
             <StackPanel x:Name="legendBlock" Width="200" >
                 <ListView ItemsSource="{Binding MarkerColors.Colors}" Background="#4C000000">
                     <ListView.ItemTemplate>
