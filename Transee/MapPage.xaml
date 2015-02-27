@@ -15,9 +15,10 @@
     <Page.Resources>
         <DataTemplate x:Key="pinTemplate" x:Name="pinTemplate">
             <Canvas RenderTransformOrigin="0.5,0.3">
-                <Path Margin="-48,-48,0,0" Fill="#FF464646" StrokeThickness="1" Data="M5.50243425 69.9855804 L48 129 L90.585556 69.9855804 C92.8299866 66.0299988 96 60.6799927 96 48 C96 25.9337703 81.1101331 7.34525538 60.8296947 1.73375077 C56.7458581 0.603771844 52.4434383 0 48 0 C21.490332 0 1.20799926e-15 21.490332 0 48 C0 60.6799927 3.26294947 66.0347595 5.50243425 69.9855804 Z" />
-                <Ellipse Margin="-48,-48,0,0" Canvas.Left="12" Canvas.Top="12" Width="72" Height="72" Fill="#FFFFFFFF" StrokeThickness="1"/>
-                <TextBlock Margin="-48,-48,0,0" Width="95" Canvas.Top="24" Text="42k" FontSize="38" FontWeight="Normal" FontFamily="Times" Foreground="#FF464646" TextAlignment="Center" RenderTransformOrigin="0.5,0.5"/>
+                <Ellipse Margin="-48,-48,0,0" Canvas.Left="0" Canvas.Top="33" Width="96" Height="96" Fill="#FF464646"/>
+                <Polygon Margin="-48,-48,0,0" Points="48 0 85.806 51.47 10.165 51.47" FillRule="NonZero" Fill="#FF464646"/>
+                <Ellipse Margin="-48,-48,0,0" Canvas.Left="12" Canvas.Top="45" Width="72" Height="72" Fill="#FFFFFFFF"/>
+                <TextBlock Margin="-48,-48,0,0" Width="95" Canvas.Top="58" Text="42k" FontSize="38" FontWeight="Normal" FontFamily="Times" Foreground="#FF464646" TextAlignment="Center" RenderTransformOrigin="0.5,0.5"/>
             </Canvas>
         </DataTemplate>
     </Page.Resources>

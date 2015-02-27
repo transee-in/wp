@@ -63,7 +63,7 @@ namespace Transee {
                 Longitude = 39.8666667
             });
             map.ZoomLevel = 12;
-            map.LandmarksVisible = true;
+            // map.HeadingChanged += Map_HeadingChanged;
 
             // load city data
             Timer_Tick(new { }, new { });
@@ -71,6 +71,10 @@ namespace Transee {
             timer.Tick += Timer_Tick;
             timer.Interval = new TimeSpan(0, 0, 30);
             timer.Start();
+        }
+
+        private void Map_HeadingChanged(MapControl sender, object args) {
+            // throw new NotImplementedException();
         }
 
         private async void Timer_Tick(object sender, object e) {
@@ -92,10 +96,12 @@ namespace Transee {
                             var tpl = this.Resources["pinTemplate"] as DataTemplate;
                             var cnt = tpl.LoadContent() as UIElement;
                             var text = this.FindVisualChild<TextBlock>(cnt);
-                            var path = this.FindVisualChild<Path>(cnt);
+                            var elps = this.FindVisualChild<Ellipse>(cnt);
+                            var plgn = this.FindVisualChild<Polygon>(cnt);
 
                             text.Text = typeItem.Name;
-                            path.Fill = new SolidColorBrush(this.markerColors.GetColorByName(type.Name));
+                            elps.Fill = new SolidColorBrush(this.markerColors.GetColorByName(type.Name));
+                            plgn.Fill = new SolidColorBrush(this.markerColors.GetColorByName(type.Name));
 
                             this.RotateMarker(item.Angle, cnt, text);
                             this.AddToMap(cnt, point);
