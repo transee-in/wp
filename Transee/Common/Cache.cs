@@ -17,6 +17,7 @@ namespace Transee.Common {
                 using (Stream stream = await storageFile.OpenStreamForWriteAsync()) {
                     byte[] content = Encoding.UTF8.GetBytes(data);
                     await stream.WriteAsync(content, 0, content.Length);
+                    stream.Dispose();
                 }
             } catch (Exception ex) {
                 throw ex;
@@ -34,6 +35,7 @@ namespace Transee.Common {
                     byte[] content = new byte[stream.Length];
                     await stream.ReadAsync(content, 0, (int) stream.Length);
                     text = Encoding.UTF8.GetString(content, 0, content.Length);
+                    stream.Dispose();
                 }
                 return text;
             } catch (Exception) {
