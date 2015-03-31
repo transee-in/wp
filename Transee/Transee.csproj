@@ -80,6 +80,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="API\CitiesFetcher.cs" />
+    <Compile Include="API\CoordinatesFetcher.cs" />
     <Compile Include="API\PositionsFetcher.cs" />
     <Compile Include="API\Request.cs" />
     <Compile Include="API\RoutesFetcher.cs" />

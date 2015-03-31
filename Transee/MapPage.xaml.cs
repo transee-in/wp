@@ -52,15 +52,17 @@ namespace Transee {
             get { return this.defaultViewModel; }
         }
 
-        private void NavigationHelper_LoadState(object sender, LoadStateEventArgs e) {
+        private async void NavigationHelper_LoadState(object sender, LoadStateEventArgs e) {
             this.mapParams = e.NavigationParameter as MapPageArgs;
 
             this.DefaultViewModel["MarkerColors"] = markerColors;
 
+            var coordinates = await CoordinatesFetcher.GetAsync(this.mapParams.CityId);
+
             // navigate user to yaroslavl
             map.Center = new Geopoint(new BasicGeoposition() {
-                Latitude = 57.6166667,
-                Longitude = 39.8666667
+                Latitude = coordinates.Lat,
+                Longitude = coordinates.Lon
             });
             map.ZoomLevel = 12;
             // map.HeadingChanged += Map_HeadingChanged;

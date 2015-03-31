@@ -65,6 +65,7 @@ namespace Transee {
             var stations = await StationsFetcher.GetAsync(cityId);
             var routes = await RoutesFetcher.GetAsync(cityId);
             var transports = await CityInfoFetcher.GetAsync(cityId);
+            var coordinates = await CoordinatesFetcher.GetAsync(cityId);
 
             settings.Values["CityID"] = cityId;
 
