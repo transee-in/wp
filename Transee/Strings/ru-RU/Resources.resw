@@ -165,4 +165,7 @@
   <data name="ShowButton.Label" xml:space="preserve">
     <value>Показать</value>
   </data>
+  <data name="minibus_taxi" xml:space="preserve">
+    <value>маршрутки</value>
+  </data>
 </root>

@@ -32,6 +32,7 @@ namespace Transee.DataModel {
                     new MarkerColor("autobus", Windows.UI.Colors.Green),
                     new MarkerColor("trolleybus", Windows.UI.Colors.Indigo),
                     new MarkerColor("tram", Windows.UI.Colors.Orange),
+                    new MarkerColor("minibus_taxi", Windows.UI.Colors.Maroon),
                 }
             };
         }
