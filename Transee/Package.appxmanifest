@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Package xmlns="http://schemas.microsoft.com/appx/2010/manifest" xmlns:m2="http://schemas.microsoft.com/appx/2013/manifest" xmlns:m3="http://schemas.microsoft.com/appx/2014/manifest" xmlns:mp="http://schemas.microsoft.com/appx/2014/phone/manifest">
-  <Identity Name="bf3436a4-fc40-4a56-9b1d-3a7fd54974be" Publisher="CN=Yuri" Version="1.0.0.0" />
-  <mp:PhoneIdentity PhoneProductId="a219b3fc-ac30-4396-a960-49466c183a06" PhonePublisherId="00000000-0000-0000-0000-000000000000" />
+  <Identity Name="31768YuriArtemev.Transee" Publisher="CN=CF44987F-F23C-45F9-A8E3-800857E98B2D" Version="1.1.0.1" />
+  <mp:PhoneIdentity PhoneProductId="2f5aba70-cedd-4c48-986b-537f2ee4c8b2" PhonePublisherId="00000000-0000-0000-0000-000000000000" />
   <Properties>
     <DisplayName>Transee</DisplayName>
     <PublisherDisplayName>Yuri Artemev</PublisherDisplayName>
