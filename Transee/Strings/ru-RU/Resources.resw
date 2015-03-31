@@ -165,6 +165,15 @@
   <data name="ShowButton.Label" xml:space="preserve">
     <value>Показать</value>
   </data>
+  <data name="astrakhan" xml:space="preserve">
+    <value>астрахань</value>
+  </data>
+  <data name="barnaul" xml:space="preserve">
+    <value>барнаул</value>
+  </data>
+  <data name="vladivostok" xml:space="preserve">
+    <value>владивосток</value>
+  </data>
   <data name="minibus_taxi" xml:space="preserve">
     <value>маршрутки</value>
   </data>
