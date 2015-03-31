@@ -14,7 +14,7 @@
 
     <Page.Resources>
         <DataTemplate x:Key="pinTemplate" x:Name="pinTemplate">
-            <Canvas RenderTransformOrigin="0.5,0.3">
+            <Canvas RenderTransformOrigin="0.5,0.3" Tapped="Canvas_Tapped">
                 <Ellipse Margin="-48,-48,0,0" Canvas.Left="0" Canvas.Top="33" Width="96" Height="96" Fill="#FF464646"/>
                 <Polygon Margin="-48,-48,0,0" Points="48 0 85.806 51.47 10.165 51.47" FillRule="NonZero" Fill="#FF464646"/>
                 <Ellipse Margin="-48,-48,0,0" Canvas.Left="12" Canvas.Top="45" Width="72" Height="72" Fill="#FFFFFFFF"/>

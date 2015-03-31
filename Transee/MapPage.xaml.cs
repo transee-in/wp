@@ -173,5 +173,9 @@ namespace Transee {
         }
 
         #endregion
+
+        private void Canvas_Tapped(object sender, TappedRoutedEventArgs e) {
+            // ...
+        }
     }
 }
