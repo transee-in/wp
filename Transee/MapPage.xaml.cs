@@ -141,9 +141,9 @@ namespace Transee {
         }
 
         private void AddToMap(DependencyObject obj, Geopoint point) {
-            map.Children.Add(obj);
             MapControl.SetLocation(obj, point);
             MapControl.SetNormalizedAnchorPoint(obj, new Point(0.5, 0.5));
+            map.Children.Add(obj);
         }
 
         private void CleanMap() {
@@ -169,6 +169,7 @@ namespace Transee {
         }
 
         protected override void OnNavigatedFrom(NavigationEventArgs e) {
+            timer.Stop();
             this.navigationHelper.OnNavigatedFrom(e);
         }
 
