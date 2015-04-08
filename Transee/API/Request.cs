@@ -5,7 +5,7 @@ using Transee.Common;
 
 namespace Transee.API {
     class Request : IDisposable {
-        private string host = "http://192.168.1.219:8000/api/v1/";
+        private string host = "https://transee.in/api/v1/";
         private HttpClient client = new HttpClient();
         private Cache cache = new Cache();
 
