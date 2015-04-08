@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using Transee.API;
 using Transee.Common;
 using Transee.DataModel;
@@ -36,6 +37,10 @@ namespace Transee {
         private DispatcherTimer timer = new DispatcherTimer();
         private MarkerColors markerColors = MarkerColors.GetDefaultMarkerColors();
 
+        private DataModel.Positions.Types positions;
+        private DataModel.Routes.Types routes;
+        private LatLon coordinates;
+
         public MapPage() {
             this.InitializeComponent();
 
@@ -55,37 +60,59 @@ namespace Transee {
         private async void NavigationHelper_LoadState(object sender, LoadStateEventArgs e) {
             this.mapParams = e.NavigationParameter as MapPageArgs;
 
-            this.DefaultViewModel["MarkerColors"] = markerColors;
+            this.DefaultViewModel["MarkerColors"] = this.markerColors;
 
-            var coordinates = await CoordinatesFetcher.GetAsync(this.mapParams.CityId);
+            // load city coordinates
+            this.coordinates = await CoordinatesFetcher.GetAsync(this.mapParams.CityId);
 
-            // navigate user to yaroslavl
-            map.Center = new Geopoint(new BasicGeoposition() {
-                Latitude = coordinates.Lat,
-                Longitude = coordinates.Lon
+            // navigate user to city
+            this.map.Center = new Geopoint(new BasicGeoposition() {
+                Latitude = this.coordinates.Lat,
+                Longitude = this.coordinates.Lon
             });
-            map.ZoomLevel = 12;
+            this.map.ZoomLevel = 12;
             // map.HeadingChanged += Map_HeadingChanged;
 
             // load city data
-            Timer_Tick(new { }, new { });
+            this.positions = await PositionsFetcher.GetAsync(this.mapParams.CityId, this.mapParams.Types);
+            this.routes = await RoutesFetcher.GetAsync(this.mapParams.CityId);
 
-            timer.Tick += Timer_Tick;
-            timer.Interval = new TimeSpan(0, 0, 30);
-            timer.Start();
+            this.DrawRoutes();
+            this.DrawPositions();
+
+            // start city positions reloader
+            this.timer.Tick += this.ReloadAndRedrawPositions_Tick;
+            this.timer.Interval = new TimeSpan(0, 0, 10);
+            this.timer.Start();
         }
 
         private void Map_HeadingChanged(MapControl sender, object args) {
             // throw new NotImplementedException();
+            // TODO change markers angle
         }
 
-        private async void Timer_Tick(object sender, object e) {
-            var positions = await PositionsFetcher.GetAsync(this.mapParams.CityId, this.mapParams.Types);
+        private void DrawRoutes() {
+            foreach (var type in positions.Items) {
+                foreach (var typeItem in type.Items) {
+                    foreach (var item in typeItem.Items) {
+                        var route = routes.GetRouteByTypeNameAndRouteId(type.Name, typeItem.Id);
+                        if (route != null) {
+                            var line = route.CreateMapPolyline();
+                            line.StrokeColor = this.GetRandomColor();
+                            line.StrokeThickness = 5;
 
-            await this.Dispatcher.RunAsync(CoreDispatcherPriority.High, () => {
-                this.CleanMap();
-            });
+                            this.map.MapElements.Add(line);
+                        }
+                    }
+                }
+            }
+        }
 
+        private Windows.UI.Color GetRandomColor() {
+            return new Windows.UI.Color() { A = 100, R = 3, G = 166, B = 120 };
+        }
+
+        private void DrawPositions() {
             foreach (var type in positions.Items) {
                 foreach (var typeItem in type.Items) {
                     foreach (var item in typeItem.Items) {
@@ -94,23 +121,30 @@ namespace Transee {
                             Longitude = item.Position.Lon,
                         });
 
-                        await this.Dispatcher.RunAsync(CoreDispatcherPriority.High, () => {
-                            var tpl = this.Resources["pinTemplate"] as DataTemplate;
-                            var cnt = tpl.LoadContent() as UIElement;
-                            var text = this.FindVisualChild<TextBlock>(cnt);
-                            var elps = this.FindVisualChild<Ellipse>(cnt);
-                            var plgn = this.FindVisualChild<Polygon>(cnt);
+                        var tpl = this.Resources["pinTemplate"] as DataTemplate;
+                        var cnt = tpl.LoadContent() as UIElement;
+                        var text = this.FindVisualChild<TextBlock>(cnt);
+                        var elps = this.FindVisualChild<Ellipse>(cnt);
+                        var plgn = this.FindVisualChild<Polygon>(cnt);
 
-                            text.Text = typeItem.Name;
-                            elps.Fill = new SolidColorBrush(this.markerColors.GetColorByName(type.Name));
-                            plgn.Fill = new SolidColorBrush(this.markerColors.GetColorByName(type.Name));
+                        text.Text = typeItem.Name;
+                        elps.Fill = new SolidColorBrush(this.markerColors.GetColorByName(type.Name));
+                        plgn.Fill = new SolidColorBrush(this.markerColors.GetColorByName(type.Name));
 
-                            this.RotateMarker(item.Angle, cnt, text);
-                            this.AddToMap(cnt, point);
-                        });
+                        this.RotateMarker(item.Angle, cnt, text);
+                        this.AddToMap(cnt, point);
                     }
                 }
             }
+        }
+
+        private async void ReloadAndRedrawPositions_Tick(object sender, object e) {
+            positions = await PositionsFetcher.GetAsync(this.mapParams.CityId, this.mapParams.Types);
+
+            await this.Dispatcher.RunAsync(CoreDispatcherPriority.High, () => {
+                this.CleanMap();
+                this.DrawPositions();
+            });
         }
 
         private childItem FindVisualChild<childItem>(DependencyObject obj) where childItem : DependencyObject {

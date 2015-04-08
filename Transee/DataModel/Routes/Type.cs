@@ -8,5 +8,18 @@ namespace Transee.DataModel.Routes {
 
         [JsonProperty("items")]
         public List<Route> Items { get; set; }
+
+        public Route GetRouteById(string id) {
+            Route foundedItem = null;
+
+            foreach (var item in Items) {
+                if (item.Id == id) {
+                    foundedItem = item;
+                    break;
+                }
+            }
+
+            return foundedItem;
+        }
     }
 }

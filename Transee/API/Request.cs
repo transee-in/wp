@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Transee.Common;
@@ -26,6 +27,7 @@ namespace Transee.API {
 
         public async Task<string> Post(string city, string method, FormUrlEncodedContent body) {
             var url = string.Concat(host, "cities/", city, "/", method);
+            Debug.WriteLine("[Request] post {0}", url);
             var response = await client.PostAsync(url, body);
             var responseString = await response.Content.ReadAsStringAsync();
             return responseString;
@@ -37,6 +39,7 @@ namespace Transee.API {
             if (value != null) {
                 return value;
             } else {
+                Debug.WriteLine("[Request] get {0}", url);
                 var response = await client.GetStringAsync(url);
                 var responseString = response.ToString();
                 cache.Set(url, responseString);
