@@ -97,10 +97,7 @@ namespace Transee {
                     foreach (var item in typeItem.Items) {
                         var route = routes.GetRouteByTypeNameAndRouteId(type.Name, typeItem.Id);
                         if (route != null) {
-                            var line = route.CreateMapPolyline();
-                            line.StrokeColor = this.GetRandomColor();
-                            line.StrokeThickness = 5;
-
+                            var line = route.CreateMapPolyline(type.Name);
                             this.map.MapElements.Add(line);
                         }
                     }

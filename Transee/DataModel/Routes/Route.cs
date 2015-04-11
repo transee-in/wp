@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Windows.Devices.Geolocation;
 using Windows.UI.Xaml.Controls.Maps;
+using Transee.Common;
 
 namespace Transee.DataModel.Routes {
     class Route {
@@ -21,7 +22,7 @@ namespace Transee.DataModel.Routes {
             }
         }
 
-        public MapPolyline CreateMapPolyline() {
+        public MapPolyline CreateMapPolyline(string typeName) {
             var line = new MapPolyline();
             var coordinates = new List<BasicGeoposition>();
 
@@ -32,6 +33,8 @@ namespace Transee.DataModel.Routes {
             }
 
             line.Path = new Geopath(coordinates);
+            line.StrokeColor = new ColorGenerator(typeName + this.Id).Generate();
+            line.StrokeThickness = 5;
 
             return line;
         }
