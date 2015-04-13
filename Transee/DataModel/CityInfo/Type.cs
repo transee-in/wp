@@ -4,7 +4,7 @@ using Windows.ApplicationModel.Resources;
 
 namespace Transee.DataModel.CityInfo {
     class Type {
-        private ResourceLoader resourceLoader = new ResourceLoader();
+        private readonly ResourceLoader _resourceLoader = new ResourceLoader();
 
         [JsonProperty("type")]
         public string Id { get; set; }
@@ -12,8 +12,6 @@ namespace Transee.DataModel.CityInfo {
         [JsonProperty("items")]
         public List<TypeItem> Items { get; set; }
 
-        public string Name {
-            get { return resourceLoader.GetString(this.Id); }
-        }
+        public string Name => _resourceLoader.GetString(Id);
     }
 }

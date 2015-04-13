@@ -11,7 +11,7 @@ namespace Transee.API {
         public static async Task<Types> GetAsync(string city, Filter filter) {
             var request = new Request();
             var jsonData = await request.Post(city, "positions", PrepareFilter(filter));
-            var listPositions = JsonConvert.DeserializeObject<List<DataModel.Positions.Type>>(jsonData);
+            var listPositions = JsonConvert.DeserializeObject<List<Type>>(jsonData);
 
             return new Types(listPositions);
         }
@@ -23,7 +23,7 @@ namespace Transee.API {
                 qs.Add(new KeyValuePair<string, string>("type[]", numbers.Key));
 
                 foreach (var number in numbers.Value) {
-                    var key = string.Format("numbers[{0}][]", numbers.Key);
+                    var key = $"numbers[{numbers.Key}][]";
                     qs.Add(new KeyValuePair<string, string>(key, number));
                 }
             }

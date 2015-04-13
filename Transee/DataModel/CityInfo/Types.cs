@@ -3,20 +3,20 @@
 namespace Transee.DataModel.CityInfo {
     class Types {
         public Types() {
-            this.Items = new List<Type>();
+            Items = new List<Type>();
         }
 
         public Types(List<Type> items) {
-            this.Items = items;
+            Items = items;
         }
 
         public Type this[int index] {
             get {
-                return this.Items[index];
+                return Items[index];
             }
 
             set {
-                this.Items[index] = value;
+                Items[index] = value;
             }
         }
 

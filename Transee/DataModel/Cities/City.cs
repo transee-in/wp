@@ -2,27 +2,16 @@
 
 namespace Transee.DataModel.Cities {
     public class City {
-        private string _id;
-        private ResourceLoader resourceLoader = new ResourceLoader();
+	    private readonly ResourceLoader _resourceLoader = new ResourceLoader();
 
         public City(string id) {
-            this._id = id;
+            Id = id;
         }
 
-        public string Id {
-            get { return this._id; }
-        }
+        public string Id { get; }
 
-        public string Name {
-            get { return resourceLoader.GetString(this._id); }
-        }
+	    public string Name => _resourceLoader.GetString(Id);
 
-        public static implicit operator City(string id) {
-            if (id == null) {
-                return null;
-            } else {
-                return new City(id);
-            }
-        }
+	    public static implicit operator City(string id) => id == null ? null : new City(id);
     }
 }

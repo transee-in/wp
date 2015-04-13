@@ -6,7 +6,7 @@ namespace Transee.DataSamples {
         public Cities Cities { get; set; }
 
         public CityListPage() {
-            this.Cities = Load();
+            Cities = Load();
         }
 
         public Cities Load() {

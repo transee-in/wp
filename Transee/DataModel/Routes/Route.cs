@@ -14,10 +14,10 @@ namespace Transee.DataModel.Routes {
         [JsonProperty("route")]
         private List<List<double>> _route {
             set {
-                this.Routes = new List<LatLon>();
+                Routes = new List<LatLon>();
 
                 foreach (var latLon in value) {
-                    this.Routes.Add(new LatLon(latLon));
+                    Routes.Add(new LatLon(latLon));
                 }
             }
         }
@@ -33,7 +33,7 @@ namespace Transee.DataModel.Routes {
             }
 
             line.Path = new Geopath(coordinates);
-            line.StrokeColor = new ColorGenerator(typeName + this.Id).Generate();
+            line.StrokeColor = new ColorGenerator(typeName + Id).Generate();
             line.StrokeThickness = 5;
 
             return line;

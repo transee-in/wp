@@ -30,10 +30,10 @@ namespace Transee.DataSamples {
                 new TypeItem("2", "2"),
             };
 
-            this.CityName = "ярославль";
-            this.Transports = new List<Type> {
-                new Type() { Id = "autobus", Items = autobus },
-                new Type() { Id = "trolleybus", Items = trolleybus },
+            CityName = "ярославль";
+            Transports = new List<Type> {
+                new Type { Id = "autobus", Items = autobus },
+                new Type { Id = "trolleybus", Items = trolleybus },
             };
         }
     }

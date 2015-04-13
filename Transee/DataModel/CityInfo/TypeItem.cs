@@ -9,8 +9,8 @@ namespace Transee.DataModel.CityInfo {
         public string Name { get; set; }
 
         public TypeItem(string id, string name) {
-            this.Id = id;
-            this.Name = name;
+            Id = id;
+            Name = name;
         }
     }
 }

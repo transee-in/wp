@@ -3,13 +3,13 @@
 namespace Transee.DataModel {
     class LatLon {
         public LatLon(List<double> rawLatLon) {
-            this.Lat = rawLatLon[0];
-            this.Lon = rawLatLon[1];
+            Lat = rawLatLon[0];
+            Lon = rawLatLon[1];
         }
 
         public LatLon(double lat, double lon) {
-            this.Lat = lat;
-            this.Lon = lon;
+            Lat = lat;
+            Lon = lon;
         }
 
         public LatLon() { }

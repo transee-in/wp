@@ -8,7 +8,7 @@ namespace Transee.API {
         public static async Task<Types> GetAsync(string city) {
             var request = new Request();
             var jsonData = await request.GetCity(city, "routes");
-            var listRoutes = JsonConvert.DeserializeObject<List<DataModel.Routes.Type>>(jsonData);
+            var listRoutes = JsonConvert.DeserializeObject<List<Type>>(jsonData);
 
             return new Types(listRoutes);
         }

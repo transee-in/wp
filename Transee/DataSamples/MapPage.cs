@@ -3,7 +3,7 @@
         public DataModel.MarkerColors MarkerColors;
 
         public MapPage() {
-            this.MarkerColors = DataModel.MarkerColors.GetDefaultMarkerColors();
+            MarkerColors = DataModel.MarkerColors.GetDefaultMarkerColors();
         }
     }
 }

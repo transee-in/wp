@@ -5,11 +5,11 @@ namespace Transee.DataModel.Cities {
         public List<City> Items { get; set; }
 
         public Cities() {
-            this.Items = new List<City>();
+            Items = new List<City>();
         }
 
         public Cities(List<City> items) {
-            this.Items = items;
+            Items = items;
         }
     }
 }
