@@ -7,7 +7,7 @@ using Windows.UI.Xaml.Navigation;
 namespace Transee {
     class ErrorPageArgs {
         public ErrorPageArgs(string textKey) {
-            this.TextKey = textKey;
+            TextKey = textKey;
         }
 
         public string TextKey { get; set; }
@@ -16,23 +16,23 @@ namespace Transee {
     }
 
     public sealed partial class ErrorPage : Page {
-        private ErrorPageArgs args;
-        private ResourceLoader resourceLoader = new ResourceLoader();
+        private ErrorPageArgs _args;
+        private readonly ResourceLoader _resourceLoader = new ResourceLoader();
 
         public ErrorPage() {
-            this.InitializeComponent();
+            InitializeComponent();
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e) {
-            this.args = e.Parameter as ErrorPageArgs;
-            this.ShowText(this.GetText());
+            _args = e.Parameter as ErrorPageArgs;
+            ShowText(GetText());
         }
 
         private void Button_Click(object sender, RoutedEventArgs e) {
-            if (args.CheckingFunction()) {
-                args.SuccessFunction();
+            if (_args.CheckingFunction()) {
+                _args.SuccessFunction();
             } else {
-                this.ShowText(TryHarder());
+                ShowText(TryHarder());
             }
         }
 
@@ -41,11 +41,11 @@ namespace Transee {
         }
 
         private string GetText() {
-            return resourceLoader.GetString(this.args.TextKey);
+            return _resourceLoader.GetString(_args.TextKey);
         }
 
         private string TryHarder() {
-            return resourceLoader.GetString("try_harder");
+            return _resourceLoader.GetString("try_harder");
         }
     }
 }

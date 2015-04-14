@@ -2,7 +2,7 @@
 
 namespace Transee.DataModel {
     class LatLon {
-        public LatLon(List<double> rawLatLon) {
+        public LatLon(IReadOnlyList<double> rawLatLon) {
             Lat = rawLatLon[0];
             Lon = rawLatLon[1];
         }

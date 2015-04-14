@@ -10,47 +10,43 @@ using Transee.API;
 namespace Transee {
     class CityListPageArgs {
         public CityListPageArgs(Cities cities) {
-            this.Cities = cities;
+            Cities = cities;
         }
 
         public Cities Cities { get; set; }
     }
 
     public sealed partial class CityListPage : Page {
-        private readonly NavigationHelper navigationHelper;
-        private readonly ObservableDictionary defaultViewModel = new ObservableDictionary();
-        private ApplicationDataContainer settings = ApplicationData.Current.LocalSettings;
-        Status status = new Status();
+        private readonly NavigationHelper _navigationHelper;
+        private readonly ObservableDictionary _defaultViewModel = new ObservableDictionary();
+        private readonly ApplicationDataContainer _settings = ApplicationData.Current.LocalSettings;
+	    private readonly Status _status = new Status();
 
         public CityListPage() {
-            this.InitializeComponent();
+            InitializeComponent();
 
-            this.navigationHelper = new NavigationHelper(this);
-            this.navigationHelper.LoadState += this.NavigationHelper_LoadState;
-            this.navigationHelper.SaveState += this.NavigationHelper_SaveState;
+            _navigationHelper = new NavigationHelper(this);
+            _navigationHelper.LoadState += NavigationHelper_LoadState;
+            _navigationHelper.SaveState += NavigationHelper_SaveState;
         }
 
-        public NavigationHelper NavigationHelper {
-            get { return this.navigationHelper; }
-        }
+        public NavigationHelper NavigationHelper => _navigationHelper;
 
-        public ObservableDictionary DefaultViewModel {
-            get { return this.defaultViewModel; }
-        }
+	    public ObservableDictionary DefaultViewModel => _defaultViewModel;
 
-        private async void NavigationHelper_LoadState(object sender, LoadStateEventArgs e) {
+	    private async void NavigationHelper_LoadState(object sender, LoadStateEventArgs e) {
             var args = e.NavigationParameter as CityListPageArgs;
             Cities cities;
 
             if (args != null) {
                 cities = args.Cities;
             } else {
-                status.ShowStatusBar("load_cities");
+                _status.ShowStatusBar("load_cities");
                 cities = await CitiesFetcher.GetAsync();
-                status.HideStatusBar();
+                _status.HideStatusBar();
             }
 
-            this.DefaultViewModel["Cities"] = cities.Items;
+            DefaultViewModel["Cities"] = cities.Items;
         }
 
         private void NavigationHelper_SaveState(object sender, SaveStateEventArgs e) {
@@ -58,18 +54,18 @@ namespace Transee {
         }
 
         private async void ItemView_ItemClick(object sender, ItemClickEventArgs e) {
-            status.ShowStatusBar("load_city_data");
+            _status.ShowStatusBar("load_city_data");
 
             var cityId = ((City) e.ClickedItem).Id;
             // load data, Request class should cache it
-            var stations = await StationsFetcher.GetAsync(cityId);
-            var routes = await RoutesFetcher.GetAsync(cityId);
-            var transports = await CityInfoFetcher.GetAsync(cityId);
-            var coordinates = await CoordinatesFetcher.GetAsync(cityId);
+            await StationsFetcher.GetAsync(cityId);
+            await RoutesFetcher.GetAsync(cityId);
+            await CityInfoFetcher.GetAsync(cityId);
+            await CoordinatesFetcher.GetAsync(cityId);
 
-            settings.Values["CityID"] = cityId;
+            _settings.Values["CityID"] = cityId;
 
-            status.HideStatusBar();
+            _status.HideStatusBar();
 
             if (!Frame.Navigate(typeof(CityPage), cityId)) {
                 var resourceLoader = ResourceLoader.GetForCurrentView("Resources");
@@ -77,14 +73,14 @@ namespace Transee {
             }
         }
 
-        #region Регистрация NavigationHelper
+        #region NavigationHelper
 
         protected override void OnNavigatedTo(NavigationEventArgs e) {
-            this.navigationHelper.OnNavigatedTo(e);
+            _navigationHelper.OnNavigatedTo(e);
         }
 
         protected override void OnNavigatedFrom(NavigationEventArgs e) {
-            this.navigationHelper.OnNavigatedFrom(e);
+            _navigationHelper.OnNavigatedFrom(e);
         }
 
         #endregion

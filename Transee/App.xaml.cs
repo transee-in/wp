@@ -13,21 +13,21 @@ using Transee.API;
 
 namespace Transee {
     public sealed partial class App : Application {
-        private TransitionCollection transitions;
+        private TransitionCollection _transitions;
 
         public App() {
-            this.InitializeComponent();
-            this.Suspending += this.OnSuspending;
+            InitializeComponent();
+            Suspending += OnSuspending;
         }
 
         protected override async void OnLaunched(LaunchActivatedEventArgs e) {
 #if DEBUG
             if (System.Diagnostics.Debugger.IsAttached) {
-                this.DebugSettings.EnableFrameRateCounter = true;
+                DebugSettings.EnableFrameRateCounter = true;
             }
 #endif
 
-            Frame rootFrame = Window.Current.Content as Frame;
+            var rootFrame = Window.Current.Content as Frame;
 
             if (rootFrame == null) {
                 rootFrame = new Frame();
@@ -51,14 +51,14 @@ namespace Transee {
 
             if (rootFrame.Content == null) {
                 if (rootFrame.ContentTransitions != null) {
-                    this.transitions = new TransitionCollection();
+                    _transitions = new TransitionCollection();
                     foreach (var c in rootFrame.ContentTransitions) {
-                        this.transitions.Add(c);
+                        _transitions.Add(c);
                     }
                 }
 
                 rootFrame.ContentTransitions = null;
-                rootFrame.Navigated += this.RootFrame_FirstNavigated;
+                rootFrame.Navigated += RootFrame_FirstNavigated;
 
                 ShowCityListOrCityPage();
             }
@@ -68,8 +68,11 @@ namespace Transee {
 
         private void RootFrame_FirstNavigated(object sender, NavigationEventArgs e) {
             var rootFrame = sender as Frame;
-            rootFrame.ContentTransitions = this.transitions ?? new TransitionCollection() { new NavigationThemeTransition() };
-            rootFrame.Navigated -= this.RootFrame_FirstNavigated;
+	        if (rootFrame == null) {
+		        return;
+	        }
+	        rootFrame.ContentTransitions = _transitions ?? new TransitionCollection() { new NavigationThemeTransition() };
+	        rootFrame.Navigated -= RootFrame_FirstNavigated;
         }
 
         private async void OnSuspending(object sender, SuspendingEventArgs e) {
@@ -79,10 +82,13 @@ namespace Transee {
         }
 
         public static async void ShowCityListOrCityPage() {
-            ApplicationDataContainer settings = ApplicationData.Current.LocalSettings;
-            Frame rootFrame = Window.Current.Content as Frame;
+            var settings = ApplicationData.Current.LocalSettings;
+            var rootFrame = Window.Current.Content as Frame;
+			if (rootFrame == null) {
+				return;
+			}
 
-            if (IsInternetAvailable) {
+			if (IsInternetAvailable) {
                 var defaultCityId = settings.Values["CityId"];
 
                 if (defaultCityId != null) {

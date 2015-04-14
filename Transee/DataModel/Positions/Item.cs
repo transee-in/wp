@@ -10,7 +10,7 @@ namespace Transee.DataModel.Positions {
         public int Angle { get; set; }
 
         [JsonProperty("position")]
-        private List<double> _position {
+        internal List<double> _position {
             set { Position = new LatLon(value); }
         }
 

@@ -4,16 +4,16 @@ using Windows.UI.ViewManagement;
 
 namespace Transee.Common {
     class Status {
-        StatusBar statusBar = StatusBar.GetForCurrentView();
-        ResourceLoader resourceLoader = new ResourceLoader();
+	    readonly StatusBar _statusBar = StatusBar.GetForCurrentView();
+	    readonly ResourceLoader _resourceLoader = new ResourceLoader();
 
         public async void ShowStatusBar(string key) {
-            statusBar.ProgressIndicator.Text = resourceLoader.GetString(key);
-            await statusBar.ProgressIndicator.ShowAsync();
+            _statusBar.ProgressIndicator.Text = _resourceLoader.GetString(key);
+            await _statusBar.ProgressIndicator.ShowAsync();
         }
 
         public async void HideStatusBar() {
-            await statusBar.ProgressIndicator.HideAsync();
+            await _statusBar.ProgressIndicator.HideAsync();
         }
     }
 }

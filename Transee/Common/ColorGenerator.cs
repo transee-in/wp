@@ -15,12 +15,12 @@ namespace Transee.Common {
         public Color Generate() {
             HashAsRgba();
 
-            return new Color() {
+            return new Color {
                 R = R, G = G, B = B, A = 190
             };
         }
 
-        private void HashAsRgba() {
+	    private void HashAsRgba() {
             var hash = ComputeMd5(_str);
 
             R = hash[0];

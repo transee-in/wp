@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using System.Collections.Generic;
+using System.Linq;
 using Windows.Devices.Geolocation;
 using Windows.UI.Xaml.Controls.Maps;
 using Transee.Common;
@@ -12,7 +13,7 @@ namespace Transee.DataModel.Routes {
         public List<LatLon> Routes { get; set; }
 
         [JsonProperty("route")]
-        private List<List<double>> _route {
+        internal List<List<double>> _route {
             set {
                 Routes = new List<LatLon>();
 
@@ -24,15 +25,11 @@ namespace Transee.DataModel.Routes {
 
         public MapPolyline CreateMapPolyline(string typeName) {
             var line = new MapPolyline();
-            var coordinates = new List<BasicGeoposition>();
+            var coordinates = Routes.Select(route => new BasicGeoposition {
+	            Latitude = route.Lat, Longitude = route.Lon
+            }).ToList();
 
-            foreach (var route in Routes) {
-                coordinates.Add(new BasicGeoposition() {
-                    Latitude = route.Lat, Longitude = route.Lon
-                });
-            }
-
-            line.Path = new Geopath(coordinates);
+	        line.Path = new Geopath(coordinates);
             line.StrokeColor = new ColorGenerator(typeName + Id).Generate();
             line.StrokeThickness = 5;
 

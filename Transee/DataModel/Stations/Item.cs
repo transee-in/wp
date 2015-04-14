@@ -7,7 +7,7 @@ namespace Transee.DataModel.Stations {
         public string Id { get; set; }
 
         [JsonProperty("position")]
-        private List<double> _position {
+        internal virtual List<double> _position {
             set { Position = new LatLon(value); }
         }
 

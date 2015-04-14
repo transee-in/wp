@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace Transee.DataModel.Routes {
     class Types {
@@ -12,22 +13,12 @@ namespace Transee.DataModel.Routes {
             Items = items;
         }
 
-        public Type GetTypeByName(string name) {
-            Type foundedItem = null;
+        public Type GetTypeByName(string name) => Items.FirstOrDefault(item => item.Name == name);
 
-            foreach (var item in Items) {
-	            if (item.Name != name) continue;
-	            foundedItem = item;
-	            break;
-            }
-
-            return foundedItem;
-        }
-
-        public Route GetRouteByTypeNameAndRouteId(string typeName, string routeID) {
+	    public Route GetRouteByTypeNameAndRouteId(string typeName, string routeId) {
 	        var type = GetTypeByName(typeName);
 
-	        return type?.GetRouteById(routeID);
+	        return type?.GetRouteById(routeId);
         }
     }
 }

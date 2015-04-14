@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Transee.DataModel.Routes {
     class Type {
@@ -9,17 +10,6 @@ namespace Transee.DataModel.Routes {
         [JsonProperty("items")]
         public List<Route> Items { get; set; }
 
-        public Route GetRouteById(string id) {
-            Route foundedItem = null;
-
-            foreach (var item in Items) {
-                if (item.Id == id) {
-                    foundedItem = item;
-                    break;
-                }
-            }
-
-            return foundedItem;
-        }
+        public Route GetRouteById(string id) => Items.FirstOrDefault(item => item.Id == id);
     }
 }

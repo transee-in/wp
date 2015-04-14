@@ -6,43 +6,42 @@ using Windows.UI.Xaml.Navigation;
 using Windows.ApplicationModel.Resources;
 using Transee.DataModel.CityInfo;
 using System;
+using System.Diagnostics;
+using System.Linq;
 using Transee.API;
 using Windows.Storage;
+using Windows.UI;
+using Windows.UI.Xaml.Media;
 
 namespace Transee {
     public sealed partial class CityPage : Page {
-        private NavigationHelper navigationHelper;
-        private ObservableDictionary defaultViewModel = new ObservableDictionary();
-        private ApplicationDataContainer settings = ApplicationData.Current.LocalSettings;
-        private ResourceLoader resourceLoader = new ResourceLoader();
-        private Status status = new Status();
-        private Dictionary<string, DataModel.CityInfo.Type> selectedTransports = new Dictionary<string, DataModel.CityInfo.Type>();
-        private string CityId;
+        private readonly NavigationHelper _navigationHelper;
+        private readonly ObservableDictionary _defaultViewModel = new ObservableDictionary();
+        private readonly ResourceLoader _resourceLoader = new ResourceLoader();
+        private readonly Status _status = new Status();
+        private readonly Dictionary<string, DataModel.CityInfo.Type> _selectedTransports = new Dictionary<string, DataModel.CityInfo.Type>();
+        private string _cityId;
 
         public CityPage() {
-            this.InitializeComponent();
+	        InitializeComponent();
 
-            this.navigationHelper = new NavigationHelper(this);
-            this.navigationHelper.LoadState += this.NavigationHelper_LoadState;
-            this.navigationHelper.SaveState += this.NavigationHelper_SaveState;
+			_navigationHelper = new NavigationHelper(this);
+            _navigationHelper.LoadState += NavigationHelper_LoadState;
+            _navigationHelper.SaveState += NavigationHelper_SaveState;
         }
 
-        public NavigationHelper NavigationHelper {
-            get { return this.navigationHelper; }
-        }
+        public NavigationHelper NavigationHelper => _navigationHelper;
 
-        public ObservableDictionary DefaultViewModel {
-            get { return this.defaultViewModel; }
-        }
+	    public ObservableDictionary DefaultViewModel => _defaultViewModel;
 
-        private async void NavigationHelper_LoadState(object sender, LoadStateEventArgs e) {
-            this.CityId = e.NavigationParameter.ToString();
-            var cityName = resourceLoader.GetString(this.CityId);
-            var transports = await CityInfoFetcher.GetAsync(this.CityId);
+	    private async void NavigationHelper_LoadState(object sender, LoadStateEventArgs e) {
+            _cityId = e.NavigationParameter.ToString();
+            var cityName = _resourceLoader.GetString(_cityId);
+            var transports = await CityInfoFetcher.GetAsync(_cityId);
 
             // TODO: add page with favorite transports
-            this.DefaultViewModel["CityName"] = cityName;
-            this.DefaultViewModel["Transports"] = transports.Items;
+            DefaultViewModel["CityName"] = cityName;
+            DefaultViewModel["Transports"] = transports.Items;
         }
 
         private void NavigationHelper_SaveState(object sender, SaveStateEventArgs e) {
@@ -58,58 +57,90 @@ namespace Transee {
         private void AppBarButton_ClickNext(object sender, RoutedEventArgs e) {
             var types = new Dictionary<string, List<string>>();
 
-            status.ShowStatusBar("load_positions");
+            _status.ShowStatusBar("load_positions");
 
-            foreach (var type in selectedTransports) {
-                var transportIds = new List<string>();
-                foreach (var element in type.Value.Items) {
-                    transportIds.Add(element.Id);
-                }
-                types.Add(type.Key, transportIds);
+            foreach (var type in _selectedTransports) {
+                var transportIds = type.Value.Items.Select(element => element.Id).ToList();
+	            types.Add(type.Key, transportIds);
             }
 
             // var positions = await PositionsFetcher.GetAsync(this.CityId, types);
-            var positionTypes = new MapPageArgs(this.CityId, types);
+            var positionTypes = new MapPageArgs(_cityId, types);
 
-            status.HideStatusBar();
+            _status.HideStatusBar();
 
             if (!Frame.Navigate(typeof(MapPage), positionTypes)) {
                 var resourceLoader = ResourceLoader.GetForCurrentView("Resources");
                 throw new Exception(resourceLoader.GetString("NavigationFailedExceptionMessage"));
             }
-        }
+		}
 
-        private void ListBox_SelectionChanged(object sender, SelectionChangedEventArgs e) {
+		private void ListView_SelectionChanged(object sender, SelectionChangedEventArgs e) {
+			var listView = sender as ListView;
+			if (listView == null) {
+				return;
+			}
+
+			var cityInfoType = listView.DataContext as DataModel.CityInfo.Type;
+			var transportTypeId = cityInfoType?.Id;
+
+			var transportType = new DataModel.CityInfo.Type {
+				Id = transportTypeId, Items = new List<TypeItem>()
+			};
+
+			foreach (TypeItem item in listView.SelectedItems) {
+				transportType.Items.Add(item);
+			}
+
+			if (_selectedTransports.ContainsKey(transportTypeId)) {
+				_selectedTransports.Remove(transportTypeId);
+			}
+
+			_selectedTransports.Add(transportTypeId, transportType);
+		}
+
+		private void ListBox_SelectionChanged(object sender, SelectionChangedEventArgs e) {
             var listBox = sender as ListBox;
-            var cityInfoType = listBox.DataContext as DataModel.CityInfo.Type;
-            var transportTypeId = cityInfoType.Id;
-            //var transportType = new DataModel.CityInfo.Type(transportTypeId);
+	        if (listBox == null) {
+		        return;
+	        }
 
-            var transportType = new DataModel.CityInfo.Type() {
-                Id = transportTypeId, Items = new List<TypeItem>()
-            };
+			Debug.WriteLine(listBox);
 
-            foreach (TypeItem item in listBox.SelectedItems) {
-                transportType.Items.Add(item);
-            }
+			if (listBox.IsEnabled) {
+				listBox.Background = new SolidColorBrush(Colors.Aquamarine);
+			} else {
+				listBox.Background = new SolidColorBrush(Colors.Transparent);
+			}
 
-            if (selectedTransports.ContainsKey(transportTypeId)) {
-                selectedTransports.Remove(transportTypeId);
-            }
+	        var cityInfoType = listBox.DataContext as DataModel.CityInfo.Type;
+	        var transportTypeId = cityInfoType?.Id;
 
-            selectedTransports.Add(transportTypeId, transportType);
+	        var transportType = new DataModel.CityInfo.Type {
+		        Id = transportTypeId, Items = new List<TypeItem>()
+	        };
+
+	        foreach (TypeItem item in listBox.SelectedItems) {
+		        transportType.Items.Add(item);
+	        }
+
+	        if (_selectedTransports.ContainsKey(transportTypeId)) {
+		        _selectedTransports.Remove(transportTypeId);
+	        }
+
+	        _selectedTransports.Add(transportTypeId, transportType);
         }
 
-        #region Регистрация NavigationHelper
+        #region NavigationHelper
 
         protected override void OnNavigatedTo(NavigationEventArgs e) {
-            this.navigationHelper.OnNavigatedTo(e);
+            _navigationHelper.OnNavigatedTo(e);
         }
 
         protected override void OnNavigatedFrom(NavigationEventArgs e) {
-            this.navigationHelper.OnNavigatedFrom(e);
+            _navigationHelper.OnNavigatedFrom(e);
         }
 
-        #endregion
-    }
+		#endregion
+	}
 }

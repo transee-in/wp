@@ -31,32 +31,61 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <Pivot
+		<Pivot
             Title="{Binding CityName}"
             ItemsSource="{Binding Transports}"
-            Grid.Row="2">
-            <Pivot.HeaderTemplate>
+			Grid.Row="2">
+			<Pivot.HeaderTemplate>
                 <DataTemplate>
                     <ContentControl Content="{Binding Name}" />
                 </DataTemplate>
             </Pivot.HeaderTemplate>
             <Pivot.ItemTemplate>
                 <DataTemplate>
-                    <ScrollViewer>
-                        <ListBox
+					<ScrollViewer>
+						<ListView
+							SelectionMode="Multiple"
+							ItemsSource="{Binding Items}"
+							Background="Transparent"
+							ItemContainerStyle="{StaticResource ListViewItemTransports}"
+							Margin="0,0,0,120" SelectionChanged="ListView_SelectionChanged">
+							<ListView.ItemsPanel>
+								<ItemsPanelTemplate>
+									<WrapGrid MaximumRowsOrColumns="3" Orientation="Horizontal" ItemHeight="110" ItemWidth="110" HorizontalAlignment="Center" />
+								</ItemsPanelTemplate>
+							</ListView.ItemsPanel>
+						
+							<ListView.ItemTemplate>
+								<DataTemplate>
+									<Grid>
+										<TextBlock Text="{Binding Name}" Style="{ThemeResource ListViewItemTextBlockStyle}" Width="100" Height="40" Margin="0,30,0,0" TextAlignment="Center"/>
+									</Grid>
+								</DataTemplate>
+							</ListView.ItemTemplate>
+						</ListView>
+					</ScrollViewer>
+					
+
+					<!--
+					<ScrollViewer>
+						<ListBox
                             SelectionMode="Multiple"
                             ItemsSource="{Binding Items}"
                             Background="Transparent"
                             SelectionChanged="ListBox_SelectionChanged"
                             Margin="0,0,0,120">
-                            <ListBox.ItemTemplate>
-                                <DataTemplate>
-                                    <TextBlock Text="{Binding Name}" Style="{ThemeResource ListViewItemTextBlockStyle}" Width="150" Height="40"/>
-                                </DataTemplate>
-                            </ListBox.ItemTemplate>
-                        </ListBox>
-                    </ScrollViewer>
-                </DataTemplate>
+							
+							<ListBox.ItemTemplate>
+								<DataTemplate>
+									<Grid>
+										<TextBlock Text="{Binding Name}" Style="{ThemeResource ListViewItemTextBlockStyle}" Width="100" Height="40" TextAlignment="Center"/>
+									</Grid>
+								</DataTemplate>
+							</ListBox.ItemTemplate>
+						</ListBox>
+					</ScrollViewer>
+					-->
+				</DataTemplate>
             </Pivot.ItemTemplate>
         </Pivot>
     </Grid>

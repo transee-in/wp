@@ -1,13 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using Transee.API;
-using Transee.Common;
-using Transee.DataModel;
 using Windows.ApplicationModel.Resources;
 using Windows.Devices.Geolocation;
 using Windows.Foundation;
-using Windows.Storage;
 using Windows.UI.Core;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -16,12 +11,16 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 using Windows.UI.Xaml.Shapes;
+using Transee.API;
+using Transee.Common;
+using Transee.DataModel;
+using Transee.DataModel.Positions;
 
 namespace Transee {
     class MapPageArgs {
         public MapPageArgs(string cityId, Dictionary<string, List<string>> types) {
-            this.CityId = cityId;
-            this.Types = types;
+            CityId = cityId;
+            Types = types;
         }
 
         public string CityId { get; set; }
@@ -29,61 +28,58 @@ namespace Transee {
     }
 
     public sealed partial class MapPage : Page {
-        private readonly NavigationHelper navigationHelper;
-        private readonly ObservableDictionary defaultViewModel = new ObservableDictionary();
-        private ApplicationDataContainer settings = ApplicationData.Current.LocalSettings;
-        private ResourceLoader resourceLoader = new ResourceLoader();
-        private MapPageArgs mapParams;
-        private DispatcherTimer timer = new DispatcherTimer();
-        private MarkerColors markerColors = MarkerColors.GetDefaultMarkerColors();
+        private readonly NavigationHelper _navigationHelper;
+        private readonly ObservableDictionary _defaultViewModel = new ObservableDictionary();
+        private MapPageArgs _mapParams;
+        private readonly DispatcherTimer _timer = new DispatcherTimer();
+        private readonly MarkerColors _markerColors = MarkerColors.GetDefaultMarkerColors();
 
-        private DataModel.Positions.Types positions;
-        private DataModel.Routes.Types routes;
-        private LatLon coordinates;
+        private Types _positions;
+        private DataModel.Routes.Types _routes;
+        private LatLon _coordinates;
 
         public MapPage() {
-            this.InitializeComponent();
+            InitializeComponent();
 
-            this.navigationHelper = new NavigationHelper(this);
-            this.navigationHelper.LoadState += this.NavigationHelper_LoadState;
-            this.navigationHelper.SaveState += this.NavigationHelper_SaveState;
+            _navigationHelper = new NavigationHelper(this);
+            _navigationHelper.LoadState += NavigationHelper_LoadState;
+            _navigationHelper.SaveState += NavigationHelper_SaveState;
         }
 
-        public NavigationHelper NavigationHelper {
-            get { return this.navigationHelper; }
-        }
+        public NavigationHelper NavigationHelper => _navigationHelper;
 
-        public ObservableDictionary DefaultViewModel {
-            get { return this.defaultViewModel; }
-        }
+	    public ObservableDictionary DefaultViewModel => _defaultViewModel;
 
-        private async void NavigationHelper_LoadState(object sender, LoadStateEventArgs e) {
-            this.mapParams = e.NavigationParameter as MapPageArgs;
+	    private async void NavigationHelper_LoadState(object sender, LoadStateEventArgs e) {
+            _mapParams = e.NavigationParameter as MapPageArgs;
+		    if (_mapParams == null) {
+			    return;
+		    }
 
-            this.DefaultViewModel["MarkerColors"] = this.markerColors;
+            DefaultViewModel["MarkerColors"] = _markerColors;
 
             // load city coordinates
-            this.coordinates = await CoordinatesFetcher.GetAsync(this.mapParams.CityId);
+            _coordinates = await CoordinatesFetcher.GetAsync(_mapParams.CityId);
 
             // navigate user to city
-            this.map.Center = new Geopoint(new BasicGeoposition() {
-                Latitude = this.coordinates.Lat,
-                Longitude = this.coordinates.Lon
+            map.Center = new Geopoint(new BasicGeoposition {
+                Latitude = _coordinates.Lat,
+                Longitude = _coordinates.Lon
             });
-            this.map.ZoomLevel = 12;
+            map.ZoomLevel = 12;
             // map.HeadingChanged += Map_HeadingChanged;
 
             // load city data
-            this.positions = await PositionsFetcher.GetAsync(this.mapParams.CityId, this.mapParams.Types);
-            this.routes = await RoutesFetcher.GetAsync(this.mapParams.CityId);
+            _positions = await PositionsFetcher.GetAsync(_mapParams.CityId, _mapParams.Types);
+            _routes = await RoutesFetcher.GetAsync(_mapParams.CityId);
 
-            this.DrawRoutes();
-            this.DrawPositions();
+            DrawRoutes();
+            DrawPositions();
 
             // start city positions reloader
-            this.timer.Tick += this.ReloadAndRedrawPositions_Tick;
-            this.timer.Interval = new TimeSpan(0, 0, 10);
-            this.timer.Start();
+            _timer.Tick += ReloadAndRedrawPositions_Tick;
+            _timer.Interval = new TimeSpan(0, 0, 10);
+            _timer.Start();
         }
 
         private void Map_HeadingChanged(MapControl sender, object args) {
@@ -92,25 +88,21 @@ namespace Transee {
         }
 
         private void DrawRoutes() {
-            foreach (var type in positions.Items) {
+            foreach (var type in _positions.Items) {
                 foreach (var typeItem in type.Items) {
                     foreach (var item in typeItem.Items) {
-                        var route = routes.GetRouteByTypeNameAndRouteId(type.Name, typeItem.Id);
+                        var route = _routes.GetRouteByTypeNameAndRouteId(type.Name, typeItem.Id);
                         if (route != null) {
                             var line = route.CreateMapPolyline(type.Name);
-                            this.map.MapElements.Add(line);
+                            map.MapElements.Add(line);
                         }
                     }
                 }
             }
         }
 
-        private Windows.UI.Color GetRandomColor() {
-            return new Windows.UI.Color() { A = 100, R = 3, G = 166, B = 120 };
-        }
-
         private void DrawPositions() {
-            foreach (var type in positions.Items) {
+            foreach (var type in _positions.Items) {
                 foreach (var typeItem in type.Items) {
                     foreach (var item in typeItem.Items) {
                         var point = new Geopoint(new BasicGeoposition() {
@@ -118,44 +110,48 @@ namespace Transee {
                             Longitude = item.Position.Lon,
                         });
 
-                        var tpl = this.Resources["pinTemplate"] as DataTemplate;
-                        var cnt = tpl.LoadContent() as UIElement;
-                        var text = this.FindVisualChild<TextBlock>(cnt);
-                        var elps = this.FindVisualChild<Ellipse>(cnt);
-                        var plgn = this.FindVisualChild<Polygon>(cnt);
+                        var tpl = Resources["pinTemplate"] as DataTemplate;
+	                    if (tpl == null) {
+		                    continue;
+	                    }
+	                    var cnt = tpl.LoadContent() as UIElement;
+	                    var text = FindVisualChild<TextBlock>(cnt);
+	                    var elps = FindVisualChild<Ellipse>(cnt);
+	                    var plgn = FindVisualChild<Polygon>(cnt);
 
-                        text.Text = typeItem.Name;
-                        elps.Fill = new SolidColorBrush(this.markerColors.GetColorByName(type.Name));
-                        plgn.Fill = new SolidColorBrush(this.markerColors.GetColorByName(type.Name));
+	                    text.Text = typeItem.Name;
+	                    elps.Fill = new SolidColorBrush(_markerColors.GetColorByName(type.Name));
+	                    plgn.Fill = new SolidColorBrush(_markerColors.GetColorByName(type.Name));
 
-                        this.RotateMarker(item.Angle, cnt, text);
-                        this.AddToMap(cnt, point);
+	                    RotateMarker(item.Angle, cnt, text);
+	                    AddToMap(cnt, point);
                     }
                 }
             }
         }
 
         private async void ReloadAndRedrawPositions_Tick(object sender, object e) {
-            positions = await PositionsFetcher.GetAsync(this.mapParams.CityId, this.mapParams.Types);
+            _positions = await PositionsFetcher.GetAsync(_mapParams.CityId, _mapParams.Types);
 
-            await this.Dispatcher.RunAsync(CoreDispatcherPriority.High, () => {
-                this.CleanMap();
-                this.DrawPositions();
+            await Dispatcher.RunAsync(CoreDispatcherPriority.High, () => {
+                CleanMap();
+                DrawPositions();
             });
         }
 
-        private childItem FindVisualChild<childItem>(DependencyObject obj) where childItem : DependencyObject {
-            for (int i = 0; i < VisualTreeHelper.GetChildrenCount(obj); i++) {
-                DependencyObject child = VisualTreeHelper.GetChild(obj, i);
+        private static TChildItem FindVisualChild<TChildItem>(DependencyObject obj) where TChildItem : DependencyObject {
+            for (var i = 0; i < VisualTreeHelper.GetChildrenCount(obj); i++) {
+                var child = VisualTreeHelper.GetChild(obj, i);
 
-                if (child != null && child is childItem) {
-                    return (childItem) child;
-                } else {
-                    childItem childOfChild = this.FindVisualChild<childItem>(child);
-                    if (childOfChild != null) {
-                        return childOfChild;
-                    }
+	            var item = child as TChildItem;
+	            if (item != null) {
+                    return item;
                 }
+
+	            var childOfChild = FindVisualChild<TChildItem>(child);
+	            if (childOfChild != null) {
+		            return childOfChild;
+	            }
             }
             return null;
         }
@@ -182,32 +178,28 @@ namespace Transee {
         }
 
         private void legendButton_Tapped(object sender, TappedRoutedEventArgs e) {
-            if (legendBlock.Visibility == Visibility.Collapsed) {
-                legendBlock.Visibility = Visibility.Visible;
-            } else {
-                legendBlock.Visibility = Visibility.Collapsed;
-            }
+	        legendBlock.Visibility = legendBlock.Visibility == Visibility.Collapsed ? Visibility.Visible : Visibility.Collapsed;
         }
 
-        private void NavigationHelper_SaveState(object sender, SaveStateEventArgs e) {
+		private void Canvas_Tapped(object sender, TappedRoutedEventArgs e) {
+			// ...
+		}
+
+		private void NavigationHelper_SaveState(object sender, SaveStateEventArgs e) {
             // TODO: Сохраните здесь уникальное состояние страницы.
         }
 
-        #region Регистрация NavigationHelper
+        #region NavigationHelper
 
         protected override void OnNavigatedTo(NavigationEventArgs e) {
-            this.navigationHelper.OnNavigatedTo(e);
+            _navigationHelper.OnNavigatedTo(e);
         }
 
         protected override void OnNavigatedFrom(NavigationEventArgs e) {
-            timer.Stop();
-            this.navigationHelper.OnNavigatedFrom(e);
+            _timer.Stop();
+            _navigationHelper.OnNavigatedFrom(e);
         }
 
         #endregion
-
-        private void Canvas_Tapped(object sender, TappedRoutedEventArgs e) {
-            // ...
-        }
     }
 }
