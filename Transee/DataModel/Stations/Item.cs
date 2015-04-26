@@ -2,15 +2,15 @@
 using System.Collections.Generic;
 
 namespace Transee.DataModel.Stations {
-    class Item {
-        [JsonProperty("id")]
-        public string Id { get; set; }
+	internal class Item {
+		[JsonProperty("id")]
+		public string Id { get; set; }
 
-        [JsonProperty("position")]
-        internal virtual List<double> _position {
-            set { Position = new LatLon(value); }
-        }
+		[JsonProperty("position")]
+		internal virtual List<double> _position {
+			set { Position = new LatLon(value); }
+		}
 
-        public LatLon Position { get; set; }
-    }
+		public LatLon Position { get; set; }
+	}
 }

@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 
 namespace Transee.DataModel.Stations {
-    class Type {
-        [JsonProperty("type")]
-        public string Name { get; set; }
+	internal class Type {
+		[JsonProperty("type")]
+		public string Name { get; set; }
 
-        [JsonProperty("items")]
-        public List<Item> Items { get; set; }
-    }
+		[JsonProperty("items")]
+		public List<Item> Items { get; set; }
+	}
 }

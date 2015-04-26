@@ -1,15 +1,15 @@
 ﻿using System.Collections.Generic;
 
 namespace Transee.DataModel.Positions {
-    class Types {
-        public Types() {
-            Items = new List<Type>();
-        }
+	internal class Types {
+		public Types() {
+			Items = new List<Type>();
+		}
 
-        public Types(List<Type> items) {
-            Items = items;
-        }
+		public Types(List<Type> items) {
+			Items = items;
+		}
 
-        public List<Type> Items { get; set; }
-    }
+		public List<Type> Items { get; set; }
+	}
 }

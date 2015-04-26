@@ -121,6 +121,7 @@ namespace Transee {
 
 						RotateMarker(item.Angle, cnt, text);
 						AddToMap(cnt, point);
+						AttachClickEvent(cnt);
 					}
 				}
 			}
@@ -161,6 +162,12 @@ namespace Transee {
 
 			text.RenderTransform = new RotateTransform() {
 				Angle = -angle
+			};
+		}
+
+		private void AttachClickEvent(UIElement obj) {
+			obj.Tapped += (sender, args) => {
+				System.Diagnostics.Debug.WriteLine("tap {0} {1}", sender, args);
 			};
 		}
 

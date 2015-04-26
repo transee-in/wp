@@ -2,23 +2,23 @@
 using System.Linq;
 
 namespace Transee.DataModel.Routes {
-    class Types {
-        public List<Type> Items { get; set; }
+	internal class Types {
+		public List<Type> Items { get; set; }
 
-        public Types() {
-            Items = new List<Type>();
-        }
+		public Types() {
+			Items = new List<Type>();
+		}
 
-        public Types(List<Type> items) {
-            Items = items;
-        }
+		public Types(List<Type> items) {
+			Items = items;
+		}
 
-        public Type GetTypeByName(string name) => Items.FirstOrDefault(item => item.Name == name);
+		public Type GetTypeByName(string name) => Items.FirstOrDefault(item => item.Name == name);
 
-	    public Route GetRouteByTypeNameAndRouteId(string typeName, string routeId) {
-	        var type = GetTypeByName(typeName);
+		public Route GetRouteByTypeNameAndRouteId(string typeName, string routeId) {
+			var type = GetTypeByName(typeName);
 
-	        return type?.GetRouteById(routeId);
-        }
-    }
+			return type?.GetRouteById(routeId);
+		}
+	}
 }
