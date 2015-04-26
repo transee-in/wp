@@ -88,6 +88,7 @@
     <Compile Include="API\RoutesFetcher.cs" />
     <Compile Include="API\StationsFetcher.cs" />
     <Compile Include="API\CityInfoFetcher.cs" />
+    <Compile Include="API\TrasportInfoFetcher.cs" />
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
@@ -117,6 +118,8 @@
     <Compile Include="DataModel\Stations\Item.cs" />
     <Compile Include="DataModel\Stations\Type.cs" />
     <Compile Include="DataModel\Stations\Types.cs" />
+    <Compile Include="DataModel\TransportInfo\Station.cs" />
+    <Compile Include="DataModel\TransportInfo\Stations.cs" />
     <Compile Include="DataSamples\CityListPage.cs" />
     <Compile Include="DataSamples\CityPage.cs" />
     <Compile Include="DataSamples\MapPage.cs" />

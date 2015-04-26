@@ -25,22 +25,23 @@
 
     <Grid>
         <Maps:MapControl x:Name="map" MapServiceToken="Sb94wT7LX1zbYUvWSKfE6w" />
-        <StackPanel VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="20,0,0,20" Visibility="Collapsed">
-            <StackPanel x:Name="legendBlock" Width="200" >
-                <ListView ItemsSource="{Binding MarkerColors.Colors}" Background="#4C000000">
-                    <ListView.ItemTemplate>
-                        <DataTemplate>
-                            <TextBlock
-                                Text="{Binding Name}"
-                                HorizontalAlignment="Stretch"
-                                VerticalAlignment="Stretch"
-                                Foreground="{Binding Brush}" />
-                        </DataTemplate>
-                    </ListView.ItemTemplate>
-                </ListView>
-            </StackPanel>
+        <StackPanel x:Name="mapInfo" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="20,0,0,20">
             <StackPanel x:Name="legendButton" Background="#4C000000" Tapped="legendButton_Tapped">
-                <TextBlock x:Uid="LegendButton" Text="Legend" Foreground="#FFFFFF" Margin="10,7" />
+                <TextBlock x:Uid="LegendButton" Text="Close" Foreground="#FFFFFF" Margin="10,7" />
+            </StackPanel>
+            <StackPanel x:Name="legendBlock">
+				<ScrollViewer>
+					<ListView ItemsSource="{Binding MapInfoContent.Items}" Background="#4C000000">
+						<ListView.ItemTemplate>
+							<DataTemplate>
+								<StackPanel>
+									<TextBlock Text="{Binding Text}"/>
+									<TextBlock Text="{Binding Info}"/>
+								</StackPanel>
+							</DataTemplate>
+						</ListView.ItemTemplate>
+					</ListView>
+				</ScrollViewer>
             </StackPanel>
         </StackPanel>
     </Grid>

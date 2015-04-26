@@ -26,11 +26,30 @@ namespace Transee {
 		public Dictionary<string, List<string>> Types { get; set; }
 	}
 
+	internal class MapInfoContentItem {
+		public string Text { get; }
+		public string Info { get; }
+
+		public MapInfoContentItem(string text, string info) {
+			Text = text;
+			Info = info;
+		}
+	}
+
+	internal class MapInfoContent {
+		public List<MapInfoContentItem> Items { get; } = new List<MapInfoContentItem>();
+
+		public void Clear() {
+			Items.Clear();
+		}
+	}
+
 	public sealed partial class MapPage {
 		public NavigationHelper NavigationHelper { get; }
 		public ObservableDictionary DefaultViewModel { get; } = new ObservableDictionary();
 
 		private MapPageArgs _mapParams;
+		private readonly MapInfoContent _mapInfoContent = new MapInfoContent();
 		private readonly DispatcherTimer _timer = new DispatcherTimer();
 		private readonly MarkerColors _markerColors = MarkerColors.GetDefaultMarkerColors();
 
@@ -53,6 +72,7 @@ namespace Transee {
 			}
 
 			DefaultViewModel["MarkerColors"] = _markerColors;
+			DefaultViewModel["MapInfoContent"] = _mapInfoContent;
 
 			// load city coordinates
 			_coordinates = await CoordinatesFetcher.GetAsync(_mapParams.CityId);
@@ -121,7 +141,7 @@ namespace Transee {
 
 						RotateMarker(item.Angle, cnt, text);
 						AddToMap(cnt, point);
-						AttachClickEvent(cnt);
+						AttachClickEvent(cnt, type.Name, item);
 					}
 				}
 			}
@@ -165,9 +185,20 @@ namespace Transee {
 			};
 		}
 
-		private void AttachClickEvent(UIElement obj) {
-			obj.Tapped += (sender, args) => {
-				System.Diagnostics.Debug.WriteLine("tap {0} {1}", sender, args);
+		private void AttachClickEvent(UIElement obj, string typeName, Item item) {
+			obj.Tapped += async (sender, args) => {
+				_mapInfoContent.Clear();
+
+				System.Diagnostics.Debug.WriteLine("tap {0} {1}", typeName, item.GosId);
+				// TODO show progress
+				var transportInfo = await TrasportInfoFetcher.GetAsync(_mapParams.CityId, typeName, item.GosId);
+				foreach (var transportInfoItem in transportInfo.Items) {
+					//System.Diagnostics.Debug.WriteLine("info: {0} {1}", transportInfoItem.Name, transportInfoItem.Time);
+
+					_mapInfoContent.Items.Add(new MapInfoContentItem(transportInfoItem.Name, transportInfoItem.Time));
+                }
+
+				mapInfo.Visibility = Visibility.Visible;
 			};
 		}
 
@@ -182,7 +213,7 @@ namespace Transee {
 		}
 
 		private void legendButton_Tapped(object sender, TappedRoutedEventArgs e) {
-			legendBlock.Visibility = legendBlock.Visibility == Visibility.Collapsed ? Visibility.Visible : Visibility.Collapsed;
+			mapInfo.Visibility = Visibility.Collapsed;
 		}
 
 		private void Canvas_Tapped(object sender, TappedRoutedEventArgs e) {

@@ -3,8 +3,8 @@ using Transee.DataModel.CityInfo;
 
 namespace Transee.DataSamples {
 	internal class CityPage {
-		public string CityName { get; set; }
-		public List<Type> Transports { get; set; }
+		public string CityName { get; }
+		public List<Type> Transports { get; }
 
 		public CityPage() {
 			var autobus = new List<TypeItem> {
