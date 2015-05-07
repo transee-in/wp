@@ -86,6 +86,7 @@
     <Compile Include="API\PositionsFetcher.cs" />
     <Compile Include="API\Request.cs" />
     <Compile Include="API\RoutesFetcher.cs" />
+    <Compile Include="API\StationInfoFetcher.cs" />
     <Compile Include="API\StationsFetcher.cs" />
     <Compile Include="API\CityInfoFetcher.cs" />
     <Compile Include="API\TrasportInfoFetcher.cs" />
@@ -115,6 +116,9 @@
     <Compile Include="DataModel\Routes\Type.cs" />
     <Compile Include="DataModel\Routes\Route.cs" />
     <Compile Include="DataModel\Routes\Types.cs" />
+    <Compile Include="DataModel\StationInfo\Forecast.cs" />
+    <Compile Include="DataModel\StationInfo\Station.cs" />
+    <Compile Include="DataModel\StationInfo\Transport.cs" />
     <Compile Include="DataModel\Stations\Item.cs" />
     <Compile Include="DataModel\Stations\Type.cs" />
     <Compile Include="DataModel\Stations\Types.cs" />
