@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Windows.ApplicationModel.Resources;
+using Windows.Storage;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
@@ -15,7 +16,8 @@ namespace Transee {
 		public NavigationHelper NavigationHelper { get; }
 		public ObservableDictionary DefaultViewModel { get; } = new ObservableDictionary();
 
-		private readonly ResourceLoader _resourceLoader = new ResourceLoader();
+        private readonly ApplicationDataContainer _settings = ApplicationData.Current.LocalSettings;
+        private readonly ResourceLoader _resourceLoader = new ResourceLoader();
 		private readonly Status _status = new Status();
 		private readonly Dictionary<string, Type> _selectedTransports = new Dictionary<string, Type>();
 		private string _cityId;
@@ -42,7 +44,9 @@ namespace Transee {
 		}
 
 		private void AppBarButton_ClickCities(object sender, RoutedEventArgs e) {
-			if (!Frame.Navigate(typeof (CityListPage))) {
+		    _settings.Values["CityID"] = null;
+
+            if (!Frame.Navigate(typeof (CityListPage))) {
 				var resourceLoader = ResourceLoader.GetForCurrentView("Resources");
 				throw new Exception(resourceLoader.GetString("NavigationFailedExceptionMessage"));
 			}
