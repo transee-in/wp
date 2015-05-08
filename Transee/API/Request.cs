@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -25,9 +26,16 @@ namespace Transee.API {
 			return await Fetch(url);
 		}
 
+	    public async Task<string> Post(string method) {
+            var url = $"{Host}{method}";
+            var body = new FormUrlEncodedContent(new List<KeyValuePair<string, string>>());
+            var response = await _client.PostAsync(url, body);
+            var responseString = await response.Content.ReadAsStringAsync();
+            return responseString;
+        }
+
 		public async Task<string> Post(string city, string method, FormUrlEncodedContent body) {
 			var url = $"{Host}cities/{city}/{method}";
-			Debug.WriteLine("[Request] post {0}", url);
 			var response = await _client.PostAsync(url, body);
 			var responseString = await response.Content.ReadAsStringAsync();
 			return responseString;
@@ -39,7 +47,6 @@ namespace Transee.API {
 				return fromCache;
 			}
 
-			Debug.WriteLine("[Request] get {0}", url);
 			var response = await _client.GetStringAsync(url);
 			_cache.Set(url, response);
 			return response;

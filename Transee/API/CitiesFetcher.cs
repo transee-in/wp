@@ -7,7 +7,7 @@ namespace Transee.API {
 	internal class CitiesFetcher {
 		public static async Task<Cities> GetAsync() {
 			var request = new Request();
-			var jsonData = await request.Get("cities");
+			var jsonData = await request.Post("cities");
 			var listCities = JsonConvert.DeserializeObject<List<City>>(jsonData);
 
 			return new Cities(listCities);
