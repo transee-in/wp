@@ -177,4 +177,106 @@
   <data name="minibus_taxi" xml:space="preserve">
     <value>маршрутки</value>
   </data>
+  <data name="bryansk" xml:space="preserve">
+    <value>брянск</value>
+  </data>
+  <data name="cheboksary" xml:space="preserve">
+    <value>чебоксары</value>
+  </data>
+  <data name="cherepovets" xml:space="preserve">
+    <value>череповец</value>
+  </data>
+  <data name="irkutsk" xml:space="preserve">
+    <value>иркутск</value>
+  </data>
+  <data name="ivanovo" xml:space="preserve">
+    <value>иваново</value>
+  </data>
+  <data name="kaliningrad" xml:space="preserve">
+    <value>калининград</value>
+  </data>
+  <data name="kazan" xml:space="preserve">
+    <value>казань</value>
+  </data>
+  <data name="khabarovsk" xml:space="preserve">
+    <value>хабаровск</value>
+  </data>
+  <data name="kostroma" xml:space="preserve">
+    <value>кострома</value>
+  </data>
+  <data name="kurgan" xml:space="preserve">
+    <value>курган</value>
+  </data>
+  <data name="kursk" xml:space="preserve">
+    <value>курск</value>
+  </data>
+  <data name="murmansk" xml:space="preserve">
+    <value>мурманск</value>
+  </data>
+  <data name="nizhny_novgorod" xml:space="preserve">
+    <value>нижний новгород</value>
+  </data>
+  <data name="novorossiysk" xml:space="preserve">
+    <value>новороссийск</value>
+  </data>
+  <data name="omsk" xml:space="preserve">
+    <value>омск</value>
+  </data>
+  <data name="oryol" xml:space="preserve">
+    <value>орел</value>
+  </data>
+  <data name="penza" xml:space="preserve">
+    <value>пенза</value>
+  </data>
+  <data name="perm" xml:space="preserve">
+    <value>пермь</value>
+  </data>
+  <data name="prokopyevsk" xml:space="preserve">
+    <value>прокопьевск</value>
+  </data>
+  <data name="ryazan" xml:space="preserve">
+    <value>рязань</value>
+  </data>
+  <data name="saint_petersburg" xml:space="preserve">
+    <value>санкт-петербург</value>
+  </data>
+  <data name="samara" xml:space="preserve">
+    <value>самара</value>
+  </data>
+  <data name="saransk" xml:space="preserve">
+    <value>саранск</value>
+  </data>
+  <data name="saratov" xml:space="preserve">
+    <value>саратов</value>
+  </data>
+  <data name="smolensk" xml:space="preserve">
+    <value>смоленск</value>
+  </data>
+  <data name="sochi" xml:space="preserve">
+    <value>сочи</value>
+  </data>
+  <data name="surgut" xml:space="preserve">
+    <value>сургут</value>
+  </data>
+  <data name="tambov" xml:space="preserve">
+    <value>тамбов</value>
+  </data>
+  <data name="ulyanovsk" xml:space="preserve">
+    <value>ульяновск</value>
+  </data>
+  <data name="veliky_novgorod" xml:space="preserve">
+    <value>великий новгород</value>
+  </data>
+  <data name="vladimir" xml:space="preserve">
+    <value>владимир</value>
+  </data>
+  <data name="voronezh" xml:space="preserve">
+    <value>воронеж</value>
+  </data>
+  <data name="yakutsk" xml:space="preserve">
+    <value>якутск</value>
+  </data>
+  <data name="yekaterinburg" xml:space="preserve">
+    <value>екатеринбург</value>
+  </data>
 </root>
