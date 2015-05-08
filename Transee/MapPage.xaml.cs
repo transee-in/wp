@@ -141,7 +141,7 @@ namespace Transee {
 
 						RotateMarker(item.Angle, cnt, text);
 						AddToMap(cnt, point);
-						AttachClickEvent(cnt, type.Name, item);
+						// AttachClickEvent(cnt, type.Name, item);
 					}
 				}
 			}

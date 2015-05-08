@@ -25,7 +25,7 @@
 
     <Grid>
         <Maps:MapControl x:Name="map" MapServiceToken="Sb94wT7LX1zbYUvWSKfE6w" />
-        <StackPanel x:Name="mapInfo" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="20,0,0,20">
+        <StackPanel x:Name="mapInfo" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="20,0,0,20" Visibility="Collapsed">
             <StackPanel x:Name="legendButton" Background="#4C000000" Tapped="legendButton_Tapped">
                 <TextBlock x:Uid="LegendButton" Text="Close" Foreground="#FFFFFF" Margin="10,7" />
             </StackPanel>
