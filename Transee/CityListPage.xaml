@@ -35,8 +35,6 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <ProgressBar x:Name="progressBar"/>
-
         <StackPanel Grid.Row="0" Margin="19,0,0,0">
             <TextBlock x:Uid="Application" Text="TRANSEE" Style="{ThemeResource TitleTextBlockStyle}" Margin="0,12,0,0"/>
             <TextBlock x:Uid="CityListHeader" Text="выберите город" Margin="0,-6.5,0,26.5" Style="{ThemeResource HeaderTextBlockStyle}" TextWrapping="NoWrap" CharacterSpacing="{ThemeResource PivotHeaderItemCharacterSpacing}" />
